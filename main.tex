@@ -1,0 +1,1522 @@
+\documentclass[12pt,a4paper,english]{article}
+\usepackage{mathtools}
+\usepackage{mathabx} 
+\usepackage[a4paper]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[OT2,T1]{fontenc}
+\usepackage{tcolorbox}
+\usepackage[keeplastbox]{flushend}
+\usepackage{color}
+\usepackage{tikz-cd}
+\usepackage{appendix}
+\usepackage{babel}
+\usepackage{dsfont}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{stmaryrd}
+\usepackage{color}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage{natbib}
+\usepackage[bb=boondox]{mathalfa}
+\geometry{top=3cm,bottom=3cm,left=2.5cm,right=2.5cm}
+\setlength\parindent{0pt}
+\renewcommand{\baselinestretch}{1.3}
+
+\newcommand\restr[2]{{% we make the whole thing an ordinary symbol
+  \left.\kern-\nulldelimiterspace % automatically resize the bar with \right
+  #1 % the function
+  \vphantom{\big|} % pretend it's a little taller at normal size
+  \right|_{#2} % this is the delimiter
+  }}
+  
+% definition of the "structure"
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{coro}[thm]{Corollary}
+\newtheorem{claim}{Claim}
+
+
+\theoremstyle{definition}
+\newtheorem{conj}{Conjecture}
+\newtheorem{defi}{Definition}
+\newtheorem*{example}{Example}
+\newtheorem{exercise}{\textbf{\textcolor{red}{Exercise}}}
+\newtheorem{step}{Step}
+
+\theoremstyle{remark}
+
+\newtheorem*{rem}{Remark}
+
+% define new control sequence
+\newcommand{\homo}{\mathbf{Hom}}
+\newcommand{\Max}{\mathbf{Max}}
+\newcommand{\spec}{\mathbf{Spec}}
+\newcommand{\spm}{\mathbf{Spec}_{max}}
+\newcommand{\Frac}{\mathbf{Frac}}
+\newcommand{\tr}{\mathrm{tr}}
+\newcommand{\codim}{\mathrm{codim}}
+\newcommand{\dif}{\text{d}}
+\newcommand{\jac}{\textbf{Jac}}
+\newcommand{\der}{\textbf{Der}}
+\newcommand{\rank}{\text{rank}}
+\newcommand{\sym}{\textbf{Sym}}
+\title{Algebraic Variety in Paris}
+\date{\today}
+\author{Deng Zhiyuan}
+
+
+\begin{document}
+\maketitle
+\newpage
+
+\tableofcontents
+\newpage
+
+\section{Background for Algebraic Geometry}
+The study for the system of solutions of polynomial functions over affine space or projective space can deal with a lot of problems in nature.
+
+For example, if a polynomial with integer coefficients, then the existence of integer or rational solutions for that polynomial is a very difficult question. And when it exists, we will be interested in the distribution of the complex solutions. We can also be interested in the number of solutions over finite field. These are all the natural arithmetic question. And for the single equation with one variable, it gives birth of the Galois theory for the extension of fields.
+
+On the other side, if one is interested in complex solutions or over an algebraic closed field, then the existence for that is "easy to deal with" thanks to Nullstellensatz which we will state later. The set of the solutions is usually infinite and the problems that we are interested in are where are their "from", their regularity and their possible topological invariants. Those are the question naturally from geometry. Note that in this case that single equation with one variable, the enumeration of solutions is well-known but a little bit subtle which is why we need the notion "multiplicity". 
+
+We can find that this two sides of problems are linked intimately: the geometry creates influence on the arithmetic properties. For example, the famous Mordell conjecture proved by Faltings that claims a curve of genus greater than 1 over the field $\mathbb{Q}$ of rational numbers has only finitely many rational points.
+
+The language of variety is the first tool that used by mathematicians to deal with those questions. Compared to Scheme, it has an advantage to stay close to the initial problem and keep the geometry intuition. It remains sufficient for some arithmetic questions too. But as explained in the course: " elliptic curves", for example, it becomes insufficient when we want to work on a ring as $\mathbb{Z}$ or $\mathbb{Z}/ p\mathbb{Z}$, or same for imperfect field, or when we are interested in problems about modules. This is to say varieties which classify varieties of a certain
+type (but here, even the language of schemes sometimes becomes insufficient...).
+
+\section{Affine variety}
+We suppose $k$ is an algebraic closed field. For geometry problems we prefer to think about $k = \mathbb{R}$ or $\mathbb{C}$ and for arithmetic problems
+we prefer to think about $k=\mathbb{Q},\overline{\mathbb{Q}}$ or $k=\mathbb{F}_{p},\overline{\mathbb{F}_{P}}$.
+\subsection{Polynomials and polynomial functions}
+\begin{defi}
+a function $f:k^{n}\rightarrow k$ is called polynomial if it is in form: 
+\begin{equation*}
+    \sum_{i_{1},...,i_{n}\in \mathbb{N}^{n}}  a_{i_{1},...,i_{n}}x_{1}^{i_{1}}...x_{n}^{i_{n}}
+\end{equation*}
+for elements $a_{i_{1}...i_{n}}$ almost all zero.
+
+The set $\mathcal{O}(k^{n})$ is denoted as all the polynomial functions over $k^{n}$ which is close under addition and multiplication. 
+
+
+\end{defi}
+It's sub-$k-$algebra of $k$-algebra $k^{k^{n}}$ which is all the function: $k^{n}\rightarrow k$. 
+
+Let's recall the definition of $k-$algebra:
+\begin{defi}
+Let $A$ be a vector space over $k$ equipped with an additional binary operation from $A\times
+A$ to $A$, denoted by "$\cdot$"(that is, if $x, y \in A$, then $x\cdot y $ is an element of $A$ that is called the product of $x,y$. Then $A$ is an algebra over $k$ if the following conditions hold:
+\begin{enumerate}
+    \item Right distribution: $(x+y)\cdot z = x\cdot z + y\cdot z$
+    \item Left distribution: $z\cdot(x+y)=z\cdot x + z\cdot y$
+    \item Compatibility with scalars: $(ax)\cdot (by)=(ab)(x\cdot y)$
+\end{enumerate}
+These three axioms are another way to say that the binary operation is bilinear. Such an algebra is called $k-$algebra.
+\end{defi}
+It should be a priori to distinguish the  $k-$algebra with abstract polynomial with $n$ indeterminate variables $X_{1},...,X_{n}$, which we denote as $k[X_{1},...,X_{n}]$. This can be characterized by the universal property: 
+\begin{claim}
+For all commutative $k-$algebra $A$ and all the family of elements $a_{1},...,a_{n}\in A$, there exists a unique $k-$algebra morphism:
+\begin{equation*}
+    \phi:k[X_{1},...,X_{n}]\rightarrow A\  \text{such as}\ \phi(X_{i})=a_{i}\ \text{for each}\ i = 1,...,n
+\end{equation*}
+\end{claim}
+We write a general function $\phi = ev_{a_{1},...,a_{n}}$ and we call this function as "evaluation morphism". Concretely, we can construct $k[X_{1},...,X_{n}]$ as $k$-vector space with the basis: a family of monomials $X_{1}^{i_{1}}\cdot\cdot\cdot X_{n}^{i_{n}}$ where $(i_{1},...,i_{n})\in \mathbb{N}^{n}$. By linearity, we extend the obvious multiplication of monomials. By the universal property applied to $A=k$, any point $(x_{1},...,x_{n})\in k^{n}$ can be given a evaluation morphism $ev_{x_{1},...,x_{n}}:k[X_{1},...,X_{n}]\rightarrow k$. For a polynomial $f\in k[X_{1},...,X_{n}]$, we also note that
+\begin{equation*}
+    f(x_{1,...,x_{n}}):=ev_{x_{1},...,x_{n}}(f)\in k,
+\end{equation*}
+which defines a function over $k^{n}$, and which is obviously polynomial. The link between polynomials functions and polynomials can also be seen by applying the universal property above to $A=k^{k^{n}}$ and $a_{i}:=i-th$ function coordinate $(x_{1},...,x_{n})\mapsto x_{i}$. It provides us a $k-$algebra morphism:
+\begin{equation*}
+    ev:k[X_{1},...,X_{n}]\rightarrow \mathcal{O}(k^{n}),
+\end{equation*}
+which is obviously surjective. We will consider that if $k$ is finite, this morphism is not injective. For example $X^{p}-X\in \mathbb{F}_{p}[X]$ sends itself to the null function on $\mathbb{F}_{p}$. However, as we always suppose our field $k$ algebraic close, therefore infinite, the following lemma tells us that we can abuse the words by confusing polynomial functions and
+polynomials:
+\begin{lem}
+if $k $ is infinite, $ev$ is an isomorphism.
+\end{lem}
+\begin{proof}
+One should see that if $f\not=0$, then there exists a point $(x_{1},...,x_{n})\in k^{n}$ such that $f(x_{1},...,x_{n})\not=0$. if $n=1$, this result from the fact that $k[X]$ is principle, so $f$ only has a finite number of irreducible factors. So $f$ only has a finite number of roots in $k$. Then we prove by induction. Suppose the desired property that we demonstrated for $n-1$, and let's write
+\begin{equation*}
+    f=\sum_{i\in\mathbb{N}}f_{i}X^{i}_{n}\ \text{with}\ f_{i}\in k[X_{1},...,X_{n-1}].
+\end{equation*}
+
+We have $f\not=0\Rightarrow\ \exists i,f_{i}\not=0 $. For such $i$, there is $x_{1},...,x_{n}\in k^{n-1}$ such as $f_{i}(x_{1},...,x_{n-1})\not=0$, but then the polynomial 
+\begin{equation*}
+    g=\sum_{i\in\mathbb{N}}f_{i}(x_{1},...,x_{n-1})X^{i}_{n}\in k[X_{n}]
+\end{equation*}
+is non-zero, so there exists $x_{n}\in k$ such as 
+\begin{equation*}
+    g(x_{n})=f(x_{1},...,x_{n})\not=0
+\end{equation*}
+\end{proof}
+From now on, we suppose that $k$ is infinite.
+
+\begin{rem}\label{rem1}
+Now we can see the duality and the algebra of such functions will be explained this chapter. Indeed, if the algebra $\mathcal{O}(k^{n})$ is defined from the space $k^{n}$, we can re-get the $k^{n}$ from algebra of  functions by the bijection "reciprocity" 
+\begin{equation*}
+    \homo(\mathcal{O}(k^{n}),k) = k^{n},
+\end{equation*}
+which is by $(x_{1},..,x_{n})\mapsto ev_{x_{1},...,x_{n}}$ and $\phi\mapsto (\phi(X_{1}),...,\phi(X_{n}))$.
+\end{rem}
+\subsection{Algebraic Subsets}
+\begin{defi}
+Fix $k$ and $n$, for a subset of polynomial functions $F\subset \mathcal{O}(k^{n})$, the associated set of common zeros in $k^{n}$:
+\begin{equation*}
+    V_{F}:=\{x=(x_{1},...,x_{n})\in k^{n},\ \forall f\in F, f(x):=f(x_{1},...,x_{n})=0\},
+\end{equation*}
+such a subset of $k^{n}$ is called algebraic subset.
+\end{defi}
+\begin{example}
+\begin{enumerate}
+    \item If $F$ only contains polynomials of degree at most 1 (i.e. linear combination of the coordinates), then $V_{F}$ is a subspace of affine space $k^{n}$, resp. subspace of vector space $k^{n}$.
+    \item If $n=1$ and $f\not=0$, then $V_{\{f\}}$ is finite, possibly empty.(e.g. $k=\mathbb{R}$, $f=x^{2}+1$). If $k=\mathbb{C}$ or more generally if $k$ is algebraic close, $V_{\{f\}}$ is always not empty.
+    \item If $n=2$ and $f\not =0$ and $k=\mathbb{R}$, $V_{\{f\}}$ is a curve in general. For example, $f=X^{2}+Y^{2}-1$ defines a circle. But it's sometimes finite (e.g. $f=X^{2}+Y^{2}$ defines a singleton $(0,0)$) or empty ($f=X^{2}+Y^{2}+1$). But if $k=\mathbb{C}$, $V_{\{f\}}$ is always not empty and infinite. And it's intuitively a real surface, or instead a complex curve. 
+    \item More generally, if $f\not=0$, $V_{\{f\}}$ is called hypersurface in $k^{n}$.
+    \item All singletons are algebraic subsets. In fact, if $x=(x_{1},...,x_{n})$, then $\{x\}=V_{F}$ with $F=\{X_{1}-x_{1},...,X_{n}-x_{n}\}$
+\end{enumerate}
+Of course, different $F$ can define the same $V_{F}$. For the beginning, we remark that the $V_{F}$ is not only depended on the ideal $I=<F>$ of $\mathcal{O}(k^{n})$ is generated by $F$.  
+\end{example}
+Before we go any further, let's recall a result:
+
+\begin{thm}
+if $A$ is a Notherian ring, then $A[X]$ is also Notherian. In particular, $k[X_{1},...,X_{n}]$ is Notherian. 
+
+Since $\mathcal{O}(k^{n})$ is Notherian, its ideals are of finite type. So we can see that any algebraic subset can be defined by a finite family of polynomials.
+\end{thm}
+However, two ideals can give the same algebraic subset. For example, $I_{1}=(X_{1},X_{2})$ and $I_{X_{2}}=(X_{1},X_{2}^{2})$ both defines the singleton $(0,0)$ in $k^{2}$.
+More generally,
+\begin{defi}
+The definition of radical ideal:
+\begin{equation*}
+    \sqrt{I}:=\{f\in I:\exists n\in\mathbb{N},f^{n}\in I\}
+\end{equation*}
+\end{defi}
+\begin{exercise}
+Verify that $V_{I}=V_{\sqrt{I}}$.
+\end{exercise}
+\begin{proof}
+\begin{tcolorbox}
+This can be obtained by those two following results"
+\begin{enumerate}
+    \item If $I_{1}\subset I_{2}$, then $V_{I_{1}}\supset V_{I_{2}}$; And obviously, $I\subset\sqrt{I}$, then $V_{\sqrt{I}}\subset V_{I}$
+    \item Then we need to prove the other inclusion:“$V_{\sqrt{I}}\supset V_{I}$”. $\forall x\in V_{I}$, then $x$ is a common zero of all $f\in I$. But for $g\in\sqrt{I}$, then $\exists n\in\mathbb{N}$, $g^{n}\in I$, then $g^{n}(x)=0\Rightarrow g(x)=0$, then $x\in V_{\sqrt{I}}$.
+\end{enumerate}
+\end{tcolorbox}
+\end{proof}
+When $k$ is not algebraic closed, it's generally very difficult to determine if $V_{I}=V_{I'}$. For $n=1$ and $k=\mathbb{R}$, we can see that $I_{1}=(X^{2}+1)$ and $I_{2}=(X^{2}+2)$ give $V_{I_{1}}=V_{I_{2}}=\emptyset$.
+
+On the other hand:
+\begin{exercise}
+If $n=1$ and $k$ is algebraic closed, and if $I,I'\subset k[X]$ are radical ideals such that $V_{I}=V_{I'}$, then show that $I=I'$.
+
+More precisely, show that the map $I\rightarrow V_{I}$ is a decreasing bijection from all the radical ideals of $k[X]$ to all the algebraic subsets of $k$, in which decreasing means If $I\subset J$, then $V_{J}\subset V_{I}$. And its reciprocity bijection
+is given by 
+\begin{equation*}
+    V\mapsto I_{V}:=\{f\in k[V]:\forall x\in V,f(x)=0\}.
+\end{equation*}
+We will start to verify that $I$ is radical iff (French.ssi: si et seulement si) its unitary generator $f$ without multiple roots, in which unitary means that the generator is monic, i.e. the dominant coefficient of the polynomial is equal to 1.      
+\end{exercise}
+\begin{lem}\label{lemradical}
+$I$ is radical iff its unitary generator does not have multiple roots. 
+
+An ideal is radical if and only if its quotient ring is reduced: i.e. no nilpotents.
+\end{lem}
+\begin{proof}
+First we want to show that $g(x)^{m}\in<f(x)>\Rightarrow \exists h(x),\ g^{m}(x)=h(x)f(x)$, so $g^{m}(\alpha_{i})=0$, since we assume $k$ is algebraically closed, $g(\alpha_{i})=0$. So $g\in<f>$.
+
+If $<f(x)>$ is radical, then $f(x)$ does not have repeated roots. Let's prove this by contradiction. Assume $f(x)$ has repeated root $\alpha$. Then $<f(x)>$ is not radical since $\frac{f(x)}{x-\alpha}\not\in <f(x)>$ so $(\frac{f(x)}{(x-\alpha)})^{2}=f(x)\frac{f(x)}{(x-\alpha)^{2}}\in <f(x)>$.
+
+\noindent\rule[0.25\baselineskip]{\textwidth}{1pt}
+Now let's prove the other assertion.
+
+$k[x_{1},...,x_{n}]$ a commutative ring with unity. And $<f(x)>$ an ideal of $k[x_{1},...,x_{n}]$.
+Then the quotient ring is commutative with unity. 
+
+Let $<f(x)>$ be radical. We need to show that: if $g+<f(x)>\in k[x_{1},...,x_{n}]/<f(x)>$, we need to prove that $k[x_{1},...,x_{n}]/<f(x)>$ is reduced, i.e. $(g+<f(x)>)^{n}=0$ then $g+<f(x)>=0$.
+
+Let $(g+<f(x)>)^{n}=0_{ k[x_{1},...,x_{n}]/<f(x)>}$, then $g^{n}+<f(x)>=0\Rightarrow g^{n}\in<f(x)>$, then $g\in <f(x)>$ which means $g+<f(x)>=0$.
+
+For the other side, we assume $k[x_{1},...,x_{n}]/<f(x)>$ is reduced. Given $g\in k[x_{1},...,x_{n}]$ and $g^{n}\in <f(x)>$, we need to show $g\in <f(x)>$. $0=<f(x)>=g^{n}+<f(x)>=(g+<f(x)>)^{n}$. Because $k[x_{1},...,x_{n}]/<f(x)>$ is reduced, this implies that $g+<f(x)>=0$. That is $g\in<f(x)>$, which means $<f(x)>$ is radical.
+\end{proof}
+
+\begin{tcolorbox}
+\begin{proof}
+
+In order to prove injection, we need to use the lemma \ref{lemradical} above:
+given $I\not= I'$, then $I, I'$ are generated by different monic polynomials without repeated root. So the corresponding the algebraic subset $V_{<f(x)>}$ are different. And surjective is obvious.
+\end{proof}
+\end{tcolorbox}
+
+We will see that those statements are still true for $n>1$, which is a consequence of Hilbert's Nullstellensatz. 
+
+\begin{defi}
+Let $V\subset k^{n}$ be an algebraic subset. A function $f:V\rightarrow k$ is called regular polynomial if it is the restriction to $V$ from polynomial function for $k^{n}$.
+\end{defi}
+The polynomial functions for $V$ from a $k-$subalgebra denoted as $\mathcal{O}(V)$ of $k-$algebra of all functions for $V$. By definition, the restriction application $f\rightarrow f|_{V}$ defines a $k-$algebra surjective morphism: $\mathcal{O}(k^{n})\rightarrow \mathcal{O}(V)$. We denote $I_{V}$ as the kernel, i.e. 
+\begin{equation*}
+    I_{V}=\{f\in \mathcal{O}(K^{n}):\forall x\in V, f(x)=0\}
+\end{equation*}
+and we have that $\mathcal{O}(V)=\mathcal{O}(k^{n})/I_{V}$. By using the quotient universal property, we deduct the reciprocity bijection by remark\ \ref{rem1}:
+\begin{equation*}
+    V \leftrightarrow \homo_{k-\text{alg}}(\mathcal{O}(V),k),
+\end{equation*}
+which shows how to recover the abstract set $V$ from the algebra $\mathcal{O}(V)$. 
+
+Here is another point of view:
+\begin{rem}\label{rem2}
+If $V$ is a singleton, then obviously we have that $\mathcal{O}(V)=k$, and so $I_{V}$ is a maximal ideal of residue field $k$. Concretely, if $V=\{x\}$ with $x=(x_{1},...,x_{n})$, then $I_{V}=\mathfrak{m}_{x}:=(X_{1}-x_{1},...,X_{n}-x_{n})$. Reciprocally, if $\mathfrak{m}$ is a maximal ideal of $\mathcal{O}(k^{n})$ of residue field $k$, then the morphism of quotient 
+\begin{equation*}
+    \pi: \mathcal{O}(k^{n})\rightarrow \mathcal{O}(k^{n})/\mathfrak{m}=k
+\end{equation*}
+provides a point $x:=(\pi(X_{1}),...,\pi(X_{n}))\in k^{n}$ and we have $\mathfrak{m}=\mathfrak{m}_{x}$ and $V_{\mathfrak{m}}=\{x\}$. This establishes a bijection from the set $k^{n}$ and all the maximal ideals of $\mathcal{O}(k^{n})$ of residue field $k$. If now $V\subset k^{n}$ is any algebraic subset, then a point $x$ is in $V$ if and only if its maximal ideal $\mathfrak{m}_{x}$ contains $I_{V}$. So we get a bijection:
+\begin{equation*}
+    V\leftrightarrow \{\text{maximal ideal of}\ \mathcal{O}(V)\ \text{of the residue field}\ k\}
+\end{equation*}
+\end{rem}
+\begin{exercise}
+Prove that bijection in the remark.
+\end{exercise}
+\begin{tcolorbox}
+\begin{proof}
+
+\end{proof}
+\end{tcolorbox}
+\begin{rem}
+For all the algebraic subsets $V\subset k^{n}$, we have $V_{I_{V}}=V$. In fact, the inclusion $V\subset V_{I_{V}}$ is tautological, and for other inclusion, we knows that $V$ is of form $V_{I}$ for an ideal $I$, which is by definition contained in $I_{V}$, so $V_{I_{V}}\subset V=V_{I}$.
+\end{rem}
+
+\subsection{Zariski Topology}
+Let's recall result from commutative algebra:
+
+We recall that the sum and the product of two ideals $I, I'$ of a commutative ring $A$ are defined by 
+\begin{equation*}
+    I+I'=\{i+i':i\in I, i'\in I'\}\ \text{and}\ I\cdot I'=<ii': i\in I,i'\in I'>(generates ideal)
+\end{equation*}
+Then we have $I\cdot II'\subset I\bigcap I'$ and $I+I'=<I\bigcup I'>$. More generally, we define the sum and the product for a finite family of ideals in a obvious way. In the case of any family of ideals $(I_{r})_{r\in R}$, we define the sum by the formula:
+\begin{equation*}
+    \sum_{r\in R}I_{r}=\bigcup\limits_{S\subset R\ finite}\sum_{s\in S}I_{s},
+\end{equation*}
+which is again an ideal of $A$.
+\begin{lem}\label{lem1}
+\begin{enumerate}
+    \item If $I\subset I'$, then $V_{I'}\subset V_{I}$.
+    \item If $(I_{r})_{r\in R}$ is any family of ideals, then $V_{\sum_{r}I_{r}}=\bigcap_{r} V_{I_{r}}$.
+    \item We have $V_{I}\bigcup V_{I'}=V_{I\bigcap I'}=V_{I\cdot I'}$
+\end{enumerate}
+\end{lem}
+\begin{proof}
+\begin{enumerate}
+    \item It's trivial;
+    \item Trivial;
+    \item The inclusions $V_{I}\bigcup V_{I'}\subset V_{I\bigcap I'}\subset V_{I\cdot I'}$. For the last inclusion, let $x\in V_{II'}\backslash V_{I}$. Fix $f\in I$ such that $f(x)\not=0$. Then for all $g\in I'$, we have $fg\in II'$ so $0=(fg)(x)=f(x)g(x)$ so $g(x)=0$. And it follows that $x\in V_{I'}$.
+\end{enumerate}
+\end{proof}
+\begin{exercise}
+Prove that 3 in lemma \ref{lem1} cannot generalize to any family of ideals. 
+\end{exercise}
+\begin{tcolorbox}
+\begin{proof}
+Consider the $f_{r}(x,y)=x^{2}+y^{2}-r^{2}$:
+so $\bigcup_{r\in[0,1)}V_{(f_{r})}=\{(x,y)|x^{2}+y^{2}<1\}$, but $V_{\bigcap_{r\in[0,1)}(f_{r})}=k^{2}$
+\end{proof}
+\end{tcolorbox}
+\begin{coro}
+The algebraic subsets in $k^{n}$ are closed w.r.t. Zarisiki topology on $k^{n}$.
+\end{coro}
+\begin{defi}
+We denote the open subset in Zariski toplogy associated with $f\in \mathcal{O}(k^{n})$ as
+\begin{equation*}
+    U_{f}:=k^{n}/V_{\{f\}}=\{x\in k^{n}:f(x)\not=0\}.
+\end{equation*}
+Such open subsets are called principal (or standard).
+
+\end{defi}
+The principal open subsets are stable under intersection because $U_{f}\bigcap U_{g}=U_{fg}$. Moreover all the Zariski open subsets are the unions of principal open subsets. In fact, $U$ is the complement of algebraic subset $V_{I}$ by definition and we have $V_{I}=\bigcap_{f\in I}V_{\{f\}}$, so that $U=\bigcup_{f\in I}U_{f}$. In fact, $U$ is the same finite union of principal open subsets as $U=\bigcup_{i=1}^{m} U_{f_{i}}$ if $I=(f_{1},...,f_{n})$.
+\begin{rem}
+If $n=1$, then the Zariski open subsets are the complement of finite sets. In particular, We see that two non-empty open sets always have a huge intersection. This topology is therefore far from being separated.
+\end{rem}
+\begin{rem}
+If $k=\mathbb{R}$ or $\mathbb{C}$, the polynomial functions are continuous, so the closed subsets are closed in the usual metric topology and the open subsets are open in the usual sense. In contrast, an open ball is not a Zariski open ball in general.
+\end{rem}
+\begin{rem}
+Provided with the Zariski topology, $k^{n}$ is not separated (see above), but satisfies the second axiom of the definition of compactness. Every open covering admits a finite under-covering (another big difference with the usual topology): we say that $k^{n}$ is quasi-compact. In fact, even if it means refining, we can assume that the covering is formed by principal open spaces, i.e. $k^{n}=\bigcup_{r\in R}U_{f_{r}}$, so that $\emptyset=V_{<f_{r},r\in R>}$. Or by Notherian, the ideal $<f_{r},r\in R>$ is generated by that $f$ is by finite type so it exists a finite $S\subset R$ such that $<f_{r},r\in R>=<f_{s},s\in S>$. Then we have a $\emptyset=V_{<f_{s},s\in S>}$ and finally $k^{n}=\bigcup_{s\in S}U_{f_{s}}$. 
+\end{rem}
+Here is another important difference with metric topology:
+
+\begin{lem}
+The set $k^{n}$ equipped with Zariski topology is Notherian. In the sense that the decreasing sequence of Zariski closed subsets is stationary.  
+\end{lem}
+\begin{proof}
+If $(V_{i})_{i\in\mathbb{N}}$ is decreasing, then the sequence of ideals $(I_{V_{i}})_{i\in\mathbb{N}}$. But we have seen previously that $V_{i}=V_{I_{V_{i}}}$ for all $i$. So $(V_{i})_{i\in \mathbb{N}}$ is also stationary.
+\end{proof}
+
+\begin{exercise}
+Let $S\subset k^{n}$ be any set and $I_{S}=\{f\in\mathcal{O}(k^{n}): \forall x\in S\}$. To show that $V_{I_{S}}$ is the closure of $S$ wrt Zariski topology.     
+\end{exercise}
+\begin{tcolorbox}
+\begin{proof}
+$V_{I_{S}}$ of course is a closed subset containing $S$, by the definition of closure,  $\bar{S}\subset V_{I_{S}}$.
+
+For the other side, given any closed subset $W=V_{\mathfrak{a}}$ containing $S$, so $S\subset V_{\mathfrak{a}}$ which means $I_{S}\supset I_{V_{\mathfrak{a}}}\supset \mathfrak{a}$. Then $V_{I_{S}}\subset V_{\mathfrak{a}}=W$, so for any given closed $W$, $V_{I_{S}}$ is the smallest closed subset containing $S$.
+\end{proof}
+\end{tcolorbox}
+Of course, each algebraic subset is naturally endowed with the induced topology. The closed subsets $V$ are of form $V_{J}$ for an ideal $I_{V}\subset J$ and are therefore associated with the ideas of $\mathcal{O}(V)$.
+\begin{lem}
+For a topological space $X$, the following properties are equivalent:
+
+\begin{enumerate}
+    \item $X$ is not the union of two proper closed subsets;
+    \item Two non-empty open subsets of $X$ have a nonempty intersection;
+    \item Any open of $X$ is dense.
+\end{enumerate}
+\end{lem}
+\begin{defi}
+A topological space is called irreducible when it satisfies the properties above.
+\end{defi}
+\begin{example}
+\begin{enumerate}
+    \item In the line $k$, the closed proper non-empty subsets are finite. so such a closed subset is irreducible if and only if it's singleton, and in general, its irreducible components coincide with its connected components. 
+    \item In the plane $k^{2}$, the closed subset defined by $(XY)$ is the union of the axis $(X)$(defined by the ideal $(Y)$) and the axis of $Y$(defined by the ideal $(X)$). Therefore it's not irreducible. Its irreducible components are the two axes.
+    \item In $k^{3}$, the irreducible components of closed subset defined by the ideal $(XY, XZ)$ are the plane by equation $x=0$ and the axe of $x$.
+\end{enumerate}
+\end{example}
+\begin{lem}
+An algebraic subset $V\subset k^{n}$ is irreducible if and only if the algebra of polynomial functions $\mathcal{O}_{k}$ is integrated(or equivalently its ideal is prime). 
+\end{lem}
+\begin{proof}
+Suppose that $\mathcal{O}(V)$ is not integrated and let $f,g$ be two nonzero functions such that $f\cdot g=0$. Then obviously, $V= V_{f}\bigcup V_{g}$ but $V_{f}\not= V$ and $V_{g}\not=V$, So $V$ is not irreducible. Reciprocally, if $V=V_{I}\bigcup V_{J}$ is the union of two proper closed subset, then $V=V_{IJ}$, so $IJ=(0)$. Or $I\not=(0)$ and $J\not=(0)$. Since the closed are proper, so $\mathcal{O}(V)$ is not integrated.    
+\end{proof}
+\begin{prop}
+An algebraic subset $V\subset k^{n}$ is the finite union of irreducible closed subsets. 
+\end{prop}
+\begin{proof}
+Let us prove by the contradiction and suppose that there is a counterexample, i.e. an algebraic subset who is not the finite union of irreducible closed subsets. As any decreasing sequence of algebraic subsets is stationary, then there is a counter-example: min $W$ for the inclusion. This $W$ is not obviously irreducible, so it can be written as the union of two proper closed subset $W=W_{1}\bigcup W_{2}$. By minimality of $W$, $W_{1}$ and $W_{2}$ are the finite union of irreducible closed subset, so $W$ is: contradiction.
+\end{proof}
+
+\begin{defi}
+We can call any maximal irreducible closed subset as irreducible component of $V$. 
+\end{defi}
+\begin{thm}
+If $A$ is a unique factorization domain(UFD), then $A[X]$ is also uniquely factorizable. In particular, $k[X_{1},...,X_{n}]$ is uniquely factorizable. 
+\end{thm}
+\begin{exercise}
+Let $f\in\mathcal{O}(k^{n})$ and $f=\prod^{r}_{i=1}f^{n_{i}}_{i}$ be its decomposition into irreducible factors(with the $f$ pair-wise unassociated). To show that $V_{f}=\bigcup_{i} V_{f_{i}}$. Is it always true that the $V_{f_{i}}$ are irreducible components of $V$?
+\end{exercise}
+\begin{tcolorbox}
+\begin{proof}
+Let's state the result first that 
+\begin{enumerate}
+    \item $V_{f}=\bigcup_{i}V_{f_{i}}$;
+    \item $V_{f_{i}}$ is not necessarily an irreducible component of $V$.
+\end{enumerate}
+The first statement is true by definition.
+
+Give a counterexample for the second one: $f=\prod_{i}^{n} x_{i}^{i}$, indeed $f$ is irreducible. But
+\begin{align*}
+    V_{f}=&\{p\in k^{n}|\prod x_{i}^{i}=0\}\\
+    =&\{p\in k^{n}|x_{i}=0\}\bigcup...\bigcup\{p\in k^{n}|x_{n}=0\}
+\end{align*}
+\end{proof}
+\end{tcolorbox}
+\begin{exercise}
+Show that if $V\subset k^{n}$ and $W\subset k^{n}$ are two algebraic subsets, then their product $V\times W\subset k^{n+m}$ is an algebaric subset?
+\end{exercise}
+\begin{tcolorbox}
+\begin{proof}
+$V\times W=\{(x,y)|\Gamma(x,y)\in\mathcal{O}(k^{n}\times k^{m}), \Gamma(x,y)=0\}$
+we could assume $\Gamma(x,y)=f(x)+g(y)$.
+
+
+One has to notice that the Zariski topology on $k^{n}\times k^{m}$ is not as same as the product topology.
+
+The product topology 
+\begin{equation*}
+    V\times W=\{(x,y)| f(x)g(y)=0\},
+\end{equation*}
+which is bigger than the set  above.
+\end{proof}
+\end{tcolorbox}
+\subsection{Some consequences of the Nullstellensatz}
+As its name suggests, Hilbert's "zero theorem" is a result of existence of solutions of a system of polynomial equations. More precisely, it asserts that if $k$ is algebraically closed, then for all the proper ideals $I$ of $\mathcal{O}(k^{n})$, we have $V_{I}=\emptyset$. If we analyze this statement a little bit, we see that it suffices to show it for maximal ideal by using the existence of maximal ideals (not constructive because of zorn's lemma). When $I=\mathfrak{m}$ is a maximal ideal which residue field is $k$ (i.e. $k\cong \mathcal{O}(k^{n})/\mathfrak{m}$), we already have a $k$-algebra morphism $ev_{x}:\mathcal{O}(k^{n})/\mathfrak{m}\rightarrow k$ defined by any $x\in V_{\mathfrak{m}}$, and such that $\mathcal{O}(k^{n})/\mathfrak{m}$ is a field. Such morphism must be bijective, i.e. the residue field of $\mathfrak{m}$ is $k$. The Nullstellensatz can be reduced to a pure algebraic statement: if $k$ is algebraically closed, then the residue field of a maximal ideal of $k[X_{1},...,X_{n}]$ is $k$. 
+
+A little bit more generally, here is a version of Nullstellensatz:
+\begin{thm}
+For any field $k$, any quotient field $K$ of $k[X_{1},...,X_{n}]$ is finite dimensional for $k$.
+\end{thm}
+If $k$ is algebraically closed, the only finite extension of $k$ is $k$ itself, hence is the theorem of existence of zeros that we wanted.
+\begin{proof}
+We refer to the course "The tools of algebraic geometry" for a proof using Noether normalization theorem, which will also be useful to us. Here we give an argument a little bit faster by using field extension theory. Note $x_{i}$ as the image of $X_{i}$ in $K$. It's to show that all $x_{i}$ algebraic for $k$.
+
+When $k$ is uncountable, here is a quick cardinality argument: the dimension of $K$
+is at most countable as $k$-vector space, then the field of rational fractions $k(T)$ has the dimension at least the cardinality of $k$ since the family of $\frac{1}{T-\lambda}$ with $\lambda\in k$ is free.
+
+In the general case, we can prove this by induction on $n$(with $k$ variable). If $n=0$, there is nothing to prove. Note that $k(x_{1})$ is a subfield of $K$ generated by $k$ and $x_{1}$. Then $K$ is a quotient field of $k(x_{1})[X_{2},...,X_{n}]$, so by the hypothesis of recurrence, $K$ is an extension of the field $k(x_{1})$. Then choose a basis of $K$ for $k(x_{1})$: $\beta_{1}=1, \beta_{2},...,\beta_{m}$. The multiplication formula in $K$ is determined by $\beta_{i}\beta_{j}=\sum_{k=1}^{m}a_{ijk}\beta_{k}$ with $a_{ijk}\in k(x_{1})$. Otherwise, we can write each $x_{1},...,x_{n}$ as  $x_{i}=\sum_{j=1}^{m}b_{ij}\beta_{j}$ with $b_{ij}\in k(x_{1})$. Then let $A:=k[a_{ijk},b_{ij}]_{i,j,k}$ be sub-$k-$algebra generated by $a_{ijk}$ and $b_{ij}$. Then $A\beta_{1}\otimes\cdot\cdot\cdot\otimes A\beta_{m} $ is a sub-$k-$algebra of $K$ containing each $x_{i}$, so $A\beta_{1}\otimes\cdot\cdot\cdot\otimes A\beta_{m}=K$. When $\beta_{1}=1$ and the other $\beta_{i}$ are linearly independent, we can deduce that $A=k(x_{1})$. Then we prove with the help of the exercise below.
+\end{proof}
+\begin{exercise}
+Show that the field $k(T)$ of rational fractions in $T$ is not a $k$-algebra of finite type(i.e. generated by a finite number of elements as a $k$-algebra).
+\end{exercise}
+\begin{tcolorbox}
+\begin{proof}
+Give an example of finite field: $1/7\in \mathbb{Z}[1/2,1/3,1/5]$.
+
+Let $f_{1}(x),...,f_{m}(x)\in k(x)$. The subalgebra generated by these is contained in $k[x, \frac{1}{g(x)}]$ where $g(x)$ is the product of the denominators of the $f_{j}$. But $k[x]$ has infinitely many irreducibles. Pick one $p(x)$ not dividing $g(x)$. And Obviously, $1/p(x)$ is not an element of $k[x,1/g(x)]$.  
+\end{proof}
+\end{tcolorbox}
+Before getting some consequences of the algebraic subsets, we need some algebraic corollaries. 
+\begin{coro}
+Let $\phi: A\rightarrow A'$ be a morphism of finite type $k-$algebra, then the inverse image $\phi^{-1}(\mathfrak{m}')$ of a maximal ideal $\mathfrak{m}$ of $A'$ is a maximal ideal of $A$.
+\end{coro}
+\begin{proof}
+Note that $\mathfrak{m}:=\phi^{-1}(\mathfrak{m'})$ as the inverse image of $\mathfrak{m'}$ in $A$. By the universal property of quotient, $\phi$ can induce an injective map $\bar{\phi}: A/\mathfrak{m}\hookrightarrow A'/\mathfrak{m'}$. However since $A'$ is a $k-$algebra of finite type, the Nullstellensatz tells us that the residue field $A'/\mathfrak{m'}$ has finite dimension over $k$.   It follows that the integral $k-$algebra $A/\mathfrak{m}$ also has finite dimension. So it's a field.
+\end{proof}
+\begin{exercise}
+Show that the integral $k-$algebra $A/\mathfrak{m}$ also has finite dimension. So it's a field.
+\end{exercise}
+\begin{tcolorbox}
+\begin{proof}
+Given $0\not=r\in R=A/\mathfrak{m}$, then there exists an $k$-linear map $\psi: R\rightarrow R, x\mapsto rx$, which is injective because of integral: $\ker(\psi_{r})=\{0\}$ and surjective due to finite dimension(if it's infinite dimensional, then "Hilbert hotel problem":
+$<x_{0},...,x_{n},...>\mapsto<0,x_{0},...x_{n},...>$). So 1 is the image of $s\in R$, then $s\mapsto sr=1$, so $s=r^{-1}\in R$, which means $R$ is a field.
+
+Here is another proof: Given $0\not=r\in R$, and as known $R$ is $k$-vector space, then there exists a family $\{1, r, r^{2},...,r^{n} \}$ of linear dependent basis, the polynomial $a_{n}r^{n}+...a_{1}r+a_{0}=o$ has non-trivial solution, where $a_{i}\in k$. If $a_{0}=0$, then 
+\begin{align*}
+    a^{n}r^{n}+...+a_{1}r=&0\\
+    r(a_{n}r^{n-1}+...+a_{1})=&0\\
+    \text{With}\ r\not=0\ \text{and algebraic closed field}\Rightarrow&\\
+    a_{n}r^{n-1}+...+a_{1}=&0
+\end{align*}
+For $a_{1}$ and the other coefficients, we can continue this process, until there is an $i$ such that $a_{i}\not=0$. WLOG, we can just assume $a_{0}\not=0$, then 
+\begin{align*}
+    a_{n}r^{n}+...+a_{1}r+a_{0}=&0\\
+    a_{n}r^{n}+...+a_{1}r=&-a_{0}\\
+    -(\frac{a_{n}}{a_{0}}r^{n}+...+\frac{a_{1}}{a_{0}}r)=&1\\
+\end{align*}
+So we find the inverse of $a_{0}$, which finishes the proof.
+\end{proof}
+\end{tcolorbox}
+\begin{prop}
+Let $A$ be a $k$-algebra of finite type and $I$ be an ideal of $A$. Then $\sqrt{I}=\bigcap_{I\subset\mathfrak{m}}\mathfrak{m}$, i.e. $\sqrt{I}$ is the intersection of the ideals containing $I$.
+\end{prop}
+\begin{proof}
+Even if replacing $A$ by $A/I$, just have to prove that  $I=(0)$, in which case $\sqrt{0}$ is the nilpotent elements in $A$. Such a maximal ideal is radical. The inclusion $\sqrt{0}\subset \bigcap_{\mathfrak{m}}\mathfrak{m}$, the inclusion is true without any hypothesis on the ring of $A$. To prove other inclusion, given $f$ non-nilpotent, find a maximal ideal $\mathfrak{m}$ such that $f\not\in\mathfrak{m}$.  However for such a $f$, the ring $A'=A[f^{-1}]=A[X]/(Xf-1)$ is nonzero, so contains a maximal ideal $\mathfrak{m'}$. Since $A'$ is of finite type as $k-$algebra, the previous corollary ensures that the inverse image $\mathfrak{m}$ of $\mathfrak{m'}$ in $A$ is a maximal ideal of $A$. But the image of $f$ in $A/\mathfrak{m}\subset A'/\mathfrak{m'}$ is not empty since invertible in $A'/\mathfrak{m'}$, so $f\not\in \mathfrak{m}$. 
+\end{proof}
+\begin{coro}
+Let $I, I'$ be two ideals of $\mathcal{O}(k^{n})$. Then $V_{I}=V_{I'}\Leftrightarrow \sqrt{I}=\sqrt{I'}$.
+\end{coro}
+\begin{proof}
+$\Leftarrow$ is clear; So suppose $V_{I}=V_{I'}$. According to the remark\ref{rem2} and the Nullstellensatz, now we know that the points of $k^{n}$ are in bijection with the maximal ideals of $\mathcal{O}(k^{n})$ by the maps $x\mapsto \mathfrak{m}_{x}$ and $\mathfrak{m}\mapsto V_{\mathfrak{m}}$. By this bijection, the points in $V_{I}$ correspond to maximal ideals containing  $I$. So we have $\sqrt{I}=\bigcap_{x\in V_{I}}\mathfrak{m}$, the corollary is proved.
+
+\end{proof}
+\begin{coro}
+Suppose $k$ is algebraically closed and fix $n$, then the maps induce the following bijections:
+\begin{center}
+    \begin{tikzcd}
+\{\text{The radical ideals of}\ \mathcal{O}(k^{n})\} \arrow[rr] &  & \{\text{The algebraic subsets of }\ k^{n}\} \arrow[ll]             \\
+\{\text{The prime ideals of}\ \mathcal{O}(k^{n})\} \arrow[rr]   &  & \{\text{The irreducible algebraic subsets of }\ k^{n}\} \arrow[ll]
+\end{tikzcd}
+\end{center}
+Further more, for an algebraic subset $V$:
+\begin{enumerate}
+    \item[-] The irreducible components of $V$ correspond to all the minimal prime ideals of $\mathcal{O}(V)$;
+    \item[-] The points of $V$ correspond to the maximal ideals of $\mathcal{O}(V)$. 
+\end{enumerate}
+\end{coro}
+\begin{proof}
+For an algebraic subset $V$, the ideal $I_{V}$ is indeed radical the algebra of functions $\mathcal{O}(V)$ is reduced. Moreover, we have already seen that $V_{I_{V}}=V$ without any assumption on $k$. On the other side, if $I$ is an ideal, $V_{I_{V_{I}}}=V_{I}$ and the previous corollary imply that $\sqrt{I_{V_{I}}}=\sqrt{I}$. However, $I_{V_{I}}$ is radical by construction. So $I$ is radical, we have $I_{V_{I}}=I$. The other assertions follow from this.  
+\end{proof}
+\begin{rem}
+If we give ourselves $F=\{f_{1},...,f_{n}\}\subset k[X_{1},...,X_{n}]$ of polynomials, the answer to the existence of solutions provided by the Nullstellensatz is following: We have $V_{f}=\emptyset$ iff there exists a set of polynomials $g_{1},...,g_{m}$ such that $1=\sum^{m}_{i=1}g_{i}f_{i}$.
+\end{rem}
+\subsection{Morphism of polynomials}
+Given our definition of algebraic subset, these objects are by nature immersed in an ambient affine space. We would like to study these objects of their embedding independently. For example, a line in $k^{2}$ and a line in $k^{3}$ should be evidently isomorphic as geometric objects. Here is a natural naive notion of morphism in this context:   
+
+
+
+\begin{defi}
+Let $V\subset k^{n}$ and $W\subset k^{m}$ be two algebraic subsets. A map is called polynomial if it's a restriction to $V$ of the polynomial map $k^{n}\rightarrow k^{m}$,  i.e. of the form:
+\begin{equation*}
+    (x_{1},...,x_{n})\mapsto (f_{1}(x_{1},...,x_{n}),...,f_{m}(x_{1},...,x_{n})), \text{with}\ f_{1},...,f_{m}\in \mathcal{O}(k^{n})
+\end{equation*}
+\end{defi}
+\begin{exercise}
+Show that a polynomial map is continuous w.r.t the Zariski topology for $V$ and $W$.
+\end{exercise}
+\begin{tcolorbox}
+\begin{proof}
+This claim is basically equal to prove polynomial is continuous.
+
+
+Given a polynomial map $\psi: V\rightarrow W$, which sends $\psi(x_{1},...,x_{n})$ to $(f_{1}(x_{1},...,x_{n}),...,f_{n}(x_{1},...,x_{n}))$.
+Since any polyonomial map $V\rightarrow W$ extends to a polynomial map between $k^{n}$ and $k^{m}$, we may assume that  $V=\mathbb{A}^{n}$ and $W=\mathbb{A}^{m}$. Consider a closed subset $Z=V_{(g_{1},...,g_{l})}\subset \mathbb{A}^{m}$, where $g_{1},...,g_{l}\in\mathcal{O}(k^{m})$. Then it follows that $\psi^{-1}(Z)=V_{g_{1}(f_{1}(x_{1},...,x_{n}),...,f_{n}(x_{1},...,x_{n})),...,g_{n}(f_{1}(x_{1},...,x_{n}),...,f_{n}(x_{1},...,x_{n}))}$.
+\end{proof}
+\end{tcolorbox}
+Let $\phi: k^{n}\rightarrow k^{m}$ be a polynomial map as above. By composition, we obtain a map $\phi^{*}:\mathcal{O}(k^{m})\rightarrow\mathcal{O}(k^{n}),\ f\mapsto \phi^{*}(f):=f\circ \phi$, which is obviously a $k-$algebra morphism. Reciprocally we find $\phi$ from $\phi^{*}$ by the formula:
+\begin{equation*}
+    \mathfrak{m}_{\phi(x)}=(\phi^{*})^{-1}(\mathfrak{m}_{x}),
+\end{equation*}
+where $\mathfrak{m}_{y}$ denotes the maximal ideal associated with $y$. If $V\subset k^{n}$ and $W\subset K^{m}$ are algebraic subsets, we have 
+\begin{equation*}
+    \phi(V)\subset W \Rightarrow \phi^{*}(I_{W})\subset I_{V}. 
+\end{equation*}
+It follows that if $\phi(V)\subset W$, then $\phi^{*}$ induced a morphism by passages to quotients:
+\begin{equation*}
+    \phi^{*}:\mathcal{O}(W)=\mathcal{O}(k^{m})/I_{W}\rightarrow \mathcal{O}(V)=\mathcal{O}(k^{n})/I_{V}.
+\end{equation*}
+\textbf{We suppose that our field is algebraic closed.} The following proposition is the basis of the whole modern approach to algebraic geometry.
+\begin{prop}\label{prop1.5.2}
+The map $\phi\rightarrow\phi^{*}$ induce a bijection:
+\begin{equation*}
+    \textbf{App.poly}(V,W)\xrightarrow{\cong}\homo_{k-\text{alg}}(\mathcal{O}(V),\mathcal{O}(W))
+\end{equation*}
+\end{prop}
+\begin{proof}
+We have already seen above that the map is injective since we construct $\phi$ from $\phi^{*}$. Construct the reciprocal bijection. Suppose $\phi:\mathcal{O}(W)\rightarrow \mathcal{O}(V)$. For each $x\in V$ there exists a unique element $\phi(x)\in W$ such that $\mathfrak{m}_{\phi(x)}=\phi^{-1}(\mathfrak{m}_{x})$. Thus it remains to prove that the map $\phi: V\rightarrow W$ is indeed polynomial. For this, we use the universal property  of algebra of polynomial to complete the commutative diagram:
+
+\begin{center}
+\begin{tikzcd}
+{k[X_{1},...,X_{m}]} \arrow[rr, "\bar{\phi}"] \arrow[d, "\pi_{W}"'] &  & {k[X_{1},...,X_{n}]} \arrow[d, "\pi_{V}"] \\
+\mathcal{O}(W) \arrow[rr, "\phi"]                                   &  & \mathcal{O}(V)                           
+\end{tikzcd}
+\end{center}
+As above, $\bar{\phi}$ induces a map $\tilde{\psi}:k^{n}\rightarrow k^{m}$, which induces the map $\psi:V\rightarrow W$. Therefore it remains to show that $\tilde{\phi}$ is polynomial. However, put $f_{j}:=\tilde{\phi}(X_{j})\in k^{n}$. $\mathfrak{m}_{\tilde{\phi}(x)}=\tilde{\phi}^{-1}(\mathfrak{m}_{x})$ ensures that $\tilde{\phi}(X_{j}-\psi(x)_{j})=f_{j}-\tilde{\psi(x)}_{j}\in \mathfrak{m}_{x}$. That's to sat that $f_{j}-\tilde{\psi}_{j}=0$. So we have $\tilde{\psi}(x)=(f_{1}(x),...,f_{n}(x))$ for every $x\in k^{n}$, so $\tilde{\psi}$ is indeed polynomial.
+\end{proof}
+For category theory, the map $V\rightarrow\mathcal{O}(V)$ and $\textbf{App.poly}(V, W)\rightarrow \homo_{k-\text{alg}}(\mathcal{O}(W),\mathcal{O}(V))$ defines a contravariant functor of the category of $k-$algebraic sets equipped the polynomial maps to category of $k$-algebra. We can then summarize the previous discussion as follows:
+\begin{prop}
+The contravariant functor $V\rightarrow\mathcal{O}(V)$ induces an equivalence between the category of $k$-algebraic sets and the category of reduced $k$-algebrba of finite type.
+\end{prop}
+\begin{proof}
+The previous proposition tells us that the functor is fully faithfully. For the essential surjectivity, Let $A$ be reduced $k$-algebra of finite type. Since $A$ is of finite type, there exists $n$ and a surjective morphism of $k$-algebra $k[X_{1},...,X_{n}]\twoheadrightarrow A$. Let $I$ be its kernel and $V_{I}$ be the associated algebraic subset. As $A$ is reduced, we have that $I=\sqrt{I}$ so $I=I_{V_{I}}$ and $A=\mathcal{O}(V_{I})$.
+\end{proof}
+These results make it possible to change perspective: The intrinsic object underlying an algebraic subset is its algebra of polynomial functions. Any presentation of this algebra as a quotient of an algebra of polynomials provides an embedding of the intrinsic object as an algebraic subset of an affine space.
+
+Here is a corollary for which a more elementary proof would be tedious. Remember that the tensor product $A\otimes B$ of two commutative $k$-algebras $A$ and $B$ is also a commutative $k-$algebra. What's more, this tensor product satisfies the following universal property: For all commutative $k-$algebra $C$, we have a bijection:
+\begin{equation*}
+    \homo_{k-\text{alg}}(A\otimes B, C)\cong\homo_{k-\text{alg}}(A,C)\times\homo_{k-\text{alg}}(B,C)
+\end{equation*}
+who sends $\psi:A\otimes_{k}B\rightarrow C$ to $(\psi\circ(id\otimes1)),(\psi\otimes(1\otimes id))$.
+
+In term of category, the tensor product is a coproduct in the category of $k-$algebra. In fact, it's also one in the category of reductive $k$-algebra.
+
+Let's recall the word "reductive":
+\begin{defi}
+Given a $k-$algebra $A$ with $k$ algebraically closed, then we call $A$ reductive if there is no nilpotent elements other than 0, i.e. $\forall a\in A\not=0, \forall n\in\mathbb{N}, a^{n}\not=0$.
+
+Or the condition can be stated as $\sqrt{(0)}=(0)$.
+\end{defi}
+
+\begin{lem}
+If $A$ and $B$ are reductive two $k-$algebra with $k$ algebraically closed, then $A\otimes_{k} B$ is reductive.
+\end{lem}
+
+
+\begin{proof}
+
+\end{proof}
+\begin{coro}
+The category of algebraic sets admits the finite product. What's more, if $V,W$ are two algebraic sets, we have $\mathcal{O}(V\times W)\cong \mathcal{O}(V)\otimes_{k}\mathcal{O}(W)$.
+\end{coro}
+\begin{proof}
+
+\end{proof}
+\begin{exercise}
+Verify that this set product is indeed the categorical product.
+\end{exercise}
+\begin{tcolorbox}
+\begin{proof}
+
+\end{proof}
+\end{tcolorbox}
+\begin{exercise}
+Let $A$ and $B$ are two $k$-algebra of finite type with $k$ algebraically closed. Directly prove that $\Max(A\otimes_{k}B)=\Max(A)\times \Max(B)$. Does it still verify if $k$ is not algebraically closed? Is it still true if we replace $\Max$ by $\spec$?
+\end{exercise}
+\begin{tcolorbox}
+\begin{proof}
+
+\end{proof}
+\end{tcolorbox}
+The topological properties of $\phi$ to understand $\phi^{*}$. By example:
+\begin{exercise}
+Let $\phi:V\rightarrow W$ be a polynomial map. Show that Zariski closure $\overline{\phi(V)}$ of $\phi(V)$ in $W$ is closed subset defined by the ideal $\ker(\phi^{*}):\overline{\phi(V)}=V_{\ker(\phi^{*})}$.
+\end{exercise}
+
+\begin{tcolorbox}
+\begin{proof}
+First $\overline{\phi(V)}\subset V_{\ker(\phi^{*})}$, which is equal to show that $\phi(V)\subset V_{\ker(\phi^{*})}$ since $V_{\ker(\phi^{*})}$ is closed.
+
+\begin{align*}
+    V_{\ker(\phi^{*})}&=\{p\in W|f(p)=0, \forall f\in \ker(\phi^{*})\}\\
+    &=\{p\in W|f(p)=0, \forall f, f\circ\phi\in I_{V}\}\\
+    \text{in which}\  f\circ\phi\in I_{V}&=\{f\circ\phi\in\mathcal{O}(V)|f\circ\phi(v)=0, \forall v\in V\}.
+\end{align*}
+Then for any $v$ such that $\phi(v)\in \phi(V),\ f(\phi(v))=0$. So $\phi(V)\subset V_{\ker(\phi^{*})}$.
+
+Second by previous lemma $\overline{\phi(V)}=V_{I_{\phi(V)}}$, so we need to prove that $V_{\ker(\phi^{*})}\subset V_{I_{\phi(V)}}$. It's just $\ker(\phi^{*})\supset I_{\phi(V)}$.
+\end{proof}
+\end{tcolorbox}
+
+\begin{defi}
+In particular, we see that $\phi(V)$ is dense iff $\phi^{*}$ is injective. In this case, we call $\phi$ with this condition dominated. 
+\end{defi}
+
+In general, the image of the morphism is not closed(not open). However, here is an important case where the image is closed.
+
+\begin{defi}
+It is said that a morphism(= polynomial map) $\phi: V\rightarrow W$ is finite if $\phi^{*}:\mathcal{O}(W)\rightarrow \mathcal{O}(V)$ makes $\mathcal{O}(V)$ a module of finite type over $\mathcal{O}(W)$.  
+\end{defi}
+\begin{rem}
+Since $\mathcal{O}(V)$ is a $k-$algebra of finite type, therefore $\mathcal{O}(W)$ is an algebra of finite type. It implies that $\phi$ is finite iff $\phi^{*}$ is entire(for all $x\in \mathcal{O}(V)$, there exists monic polynomial $P$ in $\mathcal{O}(W)[X]$(polynomial) such that $P(X)=0$).
+\end{rem}
+
+\begin{lem}
+The image of finite morphism $\phi: V\rightarrow W$ is closed.
+\end{lem}
+\begin{proof}
+Even if it means replacing $W$ by $\overline{\phi(V)}$, we can suppose that $\phi$ is dominant and it is then a question of showing that $\phi$ is surjective. In this case, $\phi^{*}$ is a injection $\mathcal{O}(W)\rightarrow\mathcal{O}(V)$ and we have to show that for all maximal ideals $\mathfrak{m}\subset \mathcal{O}(W)$, there exists a maximal ideal $\mathfrak{m'}$ of $\mathcal{O}(V)$ such that $\mathfrak{m'}\bigcap \mathcal{O}(W)=\mathfrak{m}$. So it suffices to prove that  $\mathfrak{m}\mathcal{O}(V)\not=\mathcal{O}(V)$(because then all maximal ideals of $\mathcal{O}(V)$ containing $\mathfrak{m}\mathcal{O}(V)$ will fit).  Suppose $\mathfrak{m}\mathcal{O}(V)=\mathcal{O}(V)$. As $\mathcal{O}(V)$ is a module of finite type over $\mathcal{O}(W)$, then the Nakayama's lemma tells us that there exists $f\in \mathcal{O}(W)\backslash \mathfrak{m}$ such that $f\mathcal{O}(V)=0$. But this contradicts the fact that $\mathcal{O}(W)$ injects itself into $\mathcal{O}(V)$ (For example, $f\cdot 1=f\not=0$).  
+\end{proof}
+\subsection{Sheaves of regular functions}
+In the differential geometry, the basic objects are the affine space $\mathbb{R}^{n}$ and the open subsets, which we stick together via the notion of atlas. In the algebraic geometry, the basic objects are algebraic subsets. To create other objects "by gluing", the language used is not that of the atlases but the ringed space, which are pairs formed from a topological space and a sheaf of functions "regular". The abstract language of "sheaf" will be developed in the course of scheme. we can be  content ourselves for the moment with the following definition:
+\begin{defi}
+Let $X$ be a topological space. A sheaf of functions $\mathcal{A}$ for $X$ with values in $k$ is the data, for each open set $U\subset X$, of a sub-$k-$algebra $\mathcal{A}(U)\subset k^{U}:=\{f:U\rightarrow k\}$, so that for any open covering $U=\bigcup_{i\in I}U_{i}$ and any function $f\in k^{U}$, we have 
+\begin{equation*}
+    f\in\mathcal{A}(U)\leftrightarrow \forall i\in I, f|_{U_{i}}\in \mathcal{A}(U_{i}).
+\end{equation*}
+\end{defi}
+\begin{rem}
+The elements of $\mathcal{A}(U)$ is sometimes called the section in $\mathcal{A}$ for $U$, and when $U=X$, we can call it "global section". We can find different notions in other literature for the sets of sections: the most common ones are :
+\begin{equation*}
+    \mathcal{A}(U)=\Gamma(U,\mathcal{A})=H^{0}( U,\mathcal{A})
+\end{equation*}
+\end{rem}
+We will associate any algebraic subset $V\subset k^{n}$ to a sheaf of functions $\mathcal{O}_{V}$.
+\begin{defi}
+Suppose $U\subset V$ a open subset and $f\in\mathcal{A}(U)$ a function from $U$ to $k$.
+\begin{enumerate}
+    \item $f$ is called regular at $x\in U$ if it exists $g\in\mathcal{O}(V), h\in\mathcal{O}(V)$ such that $h(x)\not=0$, and a open neighborhood $U'\subset U$ of $x$ such that $f|_{U'}=\frac{g|_{U'}}{h|_{U'}}$;
+    \item $f$ is called regular if it's regular at every point.
+\end{enumerate}
+\end{defi}
+Note that regular functions are continuous with respect to the Zariski topology. Denote
+\begin{equation*}
+    \mathcal{O}_{V}(U):=\{\text{Regular functions}\ f:U\rightarrow k\}
+\end{equation*}
+The advantage of this definition: it satisfies that the property of sheaf, given the local nature of the notion of regularity. Thus $U\rightarrow \mathcal{O}_{V}(U)$ is a sheaf of functions. The disadvantage is that the calculation of these function algebras is not always simple. The following result is fundamental:
+\begin{prop}\label{propprin}
+Suppose that $U$ a principal open subset and $h\in\mathcal{O}(V)$ such that $U=U_{h}$. Then 
+\begin{equation*}
+    \mathcal{O}_{V}(U)=\{f:U\rightarrow k, \exists g\in \mathcal{O}(V), \exists n\in\mathbb{N}, f=\frac{g|_{U}}{(h|_{U})^{n}}\}\cong \mathcal{O}(V)[h^{-1}].
+\end{equation*}
+Remember that the notion $\mathcal{O}(V)[h^{-1}]$ is the localisation of $\mathcal{O}(V)$ with the multiplicative part generated by $h$. If $h=1$, we find that $\mathcal{O}_{V}(V)=\mathcal{O}(V)$.
+\end{prop}
+\begin{proof}
+Let's start the proof by the second isomorphism. By the restriction of functions, we have a nice morphism:
+\begin{equation*}
+    \mathcal{O}(V)\rightarrow\{f:U\rightarrow k, \exists g\in \mathcal{O}(V),\exists n\in\mathbb{N}, f=\frac{g|_{U}}{(h|_{U})^{n}}\},
+\end{equation*}
+that sends $h$ to an invertible element. Thus it extends a morphism:
+\begin{equation*}
+    \mathcal{O}(V)[h^{-1}]\rightarrow \{f:U\rightarrow k ,\exists g\in \mathcal{V}, \exists n\in\mathbb{N}, f=\frac{g|_{U}}{(h|_{U})^{n}}\},
+\end{equation*}
+which is surjective. Verify that it's also injective: if $\frac{g}{h^{n}}$ is in the kernel, then $g$ is also in the kernel, i.e. $g|_{U_{h}}=0$, thus $hg$ is the zero function for $V$, i.e. $hg=0$ in $\mathcal{O}(V)$, and it follows that $g=0$ in the localisation $\mathcal{O}(V)[h^{-1}]$. So the morphism above is an isomorphism.
+
+Now let us prove the first equality. Only inclusion $\subset$ is not trivial. Suppose $f:U\rightarrow k$ a regular function. Since $U$ is quasi-compact,  there exists a finite cover $U=\bigcup^{r}_{i=1}U_{i}$ and the functions $g_{i}, h_{i}\in\mathcal{O}(V)$ such that $f|_{U_{i}}=\frac{g_{i|_{U_{I}}}}{h_{i}|_{U_{i}}}$. Since $h_{i}$ is not 0 in $U_{i}$. The closed subset defined by the ideal $(h_{1},...,h_{r})$ is contained in $V_{\{h\}}=V\backslash U$, so $h\in\sqrt{(h_{1},...,h_{r})}$, i.e. there exists $n\in\mathbb{N}$ and $a_{1},...,a_{r}\in\mathcal{O}(V)$ such that $h^{n}=\sum^{r}_{i=1}a_{i}h_{i}$.
+
+In the case where $V$ is irreducible, then we can conclude easily. In fact, the function $f\cdot h^{n}$ coincide with the polynomial function $g=\sum_{i}a_{i}g_{i}\in\mathcal{O}(V)$ in the intersection $\bigcap_{i=1}^{r}U_{i}$. Or because of $V$, and so $U$ is. The open $\bigcap^{r}_{i=1}U_{i}$ is dense in $U$. So those two functions coincides in $U$ for every point. And We have $f=\frac{g|_{U}}{(h|_{U})^{n}}$. 
+
+In general, we start by showing that we can suppose $U_{i}=U_{h_{i}}$. For that, we can suppose that $U_{i}$ are chosen principal, let's say that $U_{i}=U_{h'_{i}}$. Then we have $V_{h_{i}}\subset V_{h'_{i}}$, so $\sqrt{(h_{i})}\supset \sqrt{(h'_{i})}$ and there exists $n_{i}\in\mathbb{N}$ and $b_{i}\in\mathcal{O}(V)$ such that $(h'_{i})^{m_{i}}=b_{i}h_{i}$. It ensures that $f=\frac{g'_{i}|_{U_{i}}}{(h'_{i})^{m_{i}}|_{U_{i}}}$ with $g'_{i}= g_{i}b_{i}$. So we can replace $h_{i} $ by $(h'_{i})^{m_{i}}$ and then we have that $U_{i}=U_{h_{i}}$.
+
+If $j$ is another index, so we have that $U_{i}\bigcap U_{j}=U_{h_{i}h_{j}}$, and the equality $\frac{g_{i}}{h_{i}}$ and $\frac{g_{j}}{h_{j}}$ for $U$ is equal to the equality $(h_{i}g_{j}-h_{j}g_{i})|_{U_{h_{i}h_{j}}}$, so the equality $h_{i}h_{j}(h_{i}g_{j}-h_{j}g_{i})=0$ for $V$ and finally there is the equality:
+\begin{equation*}
+    h^{2}_{i}h_{j}g_{j}=h^{2}_{j}h_{i}g_{i}\ \ \text{in}\ \mathcal{O}(V) 
+\end{equation*}
+It follows that the function $fh^{2}_{i}$ coincides with the function $h_{i}g_{i}$ for each $U_{j}$, therefore on $U$ as a whole. Now remain to choose $n$ and $a_{1},...,a_{r}\in\mathcal{O}(V)$ such that $h^{n}=\sum^{r}_{i=1}a_{i}h_{i}^{2}$, noting that $U_{i}=U_{h_{i}^{2}}$. Then we obtain that $fh^{n}$ coincide with $g:=\sum_{i}a_{i}h_{i}g_{i}$ for $U$, i.e. $f=\frac{g|_{U}}{h|_{U}}$ as wanted. 
+\end{proof}
+Here is an calculation example for a non-principal open subset:
+\begin{exercise}
+Suppose $V:=k^{2}$ and $U=k^{2}\backslash \{(0,0)\}$. Show that $\mathcal{O}_{V}(U)=\mathcal{O}(k^{2})$.
+\end{exercise}
+\begin{tcolorbox}
+\begin{proof}
+\begin{claim}
+If $X\subset \mathbb{A}^{n}$ is quasi-affine variety such that $\overline{X}=\mathbb{A}^{n}$, then any $f\in \mathcal{O}_{X}$ is equal to $\frac{g}{h}$ on $X$ for some $h, g\in k[x_{1},...,x_{n}]$, $h$ vanishes nowhere on $X$.      
+\end{claim}
+
+Using this claim, we can easily see that the map $k[x,y]\rightarrow \mathcal{O}_{\mathbb{A}^{2}}\backslash \{(0,0)\}$ defined by restriction of function is surjective (Essentially because a polynomial function nonvanishing on $\mathbb{A}^{2}\backslash\{(0,0)\}$ must be constant, as k is algebraically closed). Injectivity is also easy. So we are done.
+\end{proof}
+\begin{proof}
+$\mathbb{A}^{2}\backslash\{(0,0)\}$ is covered by $\{x\not=0\}$ and $\{y\not=0\}$, which are affine and have rings of regular functions $k[x,x^{-1},y]$ and $k[x,y,y^{-1}]$. Thus by the sheaf property, the ring of regular functions on $\mathbb{A}^{2}\backslash\{(0,0)\}$ is $k[x,y,x^{-1}]\bigcap k[x,y,y^{-1}]$. 
+\end{proof}
+\end{tcolorbox}
+\begin{defi}
+Suppose $X$ a topological space and $\mathcal{O}_{X}$ the sheaf of function valued on $k$ for $X$. For a point $x\in X$, we denote that 
+\begin{equation*}
+    \mathcal{O}_{X,x}=\varinjlim_{U,x\in U}\mathcal{O}_{X}(U)
+\end{equation*}
+the $k-$algebra of germ of functions in $\mathcal{O}_{X}$.
+\end{defi}
+\begin{prop}
+Suppose $V$ an algebraic subset and $x\in V$ corresponds the maximal ideal $\mathfrak{m}_{x}$ of $\mathcal{O}(V)$. Then $\mathcal{O}_{V,x}=\mathcal{O}(V)_{\mathfrak{m}_{x}}$(the localisation at the ideal $\mathfrak{m}_{x}$).
+\end{prop}
+\begin{proof}
+Consider the canonical morphism $\mathcal{O}(V)\rightarrow \mathcal{O}_{V,x}$ that sends a polynomial function $f$ to its germ $f_{x}$ in $x$. If $h\in \mathcal{O}(V)\backslash \mathfrak{m}_{x}$, then $h(x)\not=0$, so the restriction of $h$ to a suitable open neighborhood $U$ of $x$ is invertible. By the consequence of the germ $h_{x}$ of $h$ is inverible in $\mathcal{O}_{V,x}$. By universal property of localisation, it follows that the canonical morphism extends to a morphism $\mathcal{O}(V)_{\mathfrak{m}_{x}}\rightarrow \mathcal{O}_{V,x}$.
+
+[Surjective]: By definition, a germ is represented by a couple $(U,f)$ with $x\in U$ and regular function $f$ for $U$. Even if it means taking smaller $U$, we can suppose that $f$ is of form $\frac{g|_{U}}{h|_{U}}$ with $h$ is not zero in $U$, so in particular not on x. So we have $f_{x}=\frac{g_{x}}{h|_{x}}$ and the morphism above is surjective.
+
+[Injective]: Suppose $f\in\mathcal{O}(V)$ such that $f_{x}=0$. There exists a open neighborhood $U$ of $x$ such that $f|_{U}=0$. Suppose $W:=V\backslash U$. Then $f\cdot I_{W}=(0)$. Or $I_{W}$ contains function $g$ that does not vanish at $x$, i.e. $g\in \mathcal{O}(V)\backslash \mathfrak{m}_{x}$. The equality $fg=0$ implies the image of $f$ in the localisation $\mathcal{O}(V)_{\mathfrak{m}_{x}}$ is not empty. The morphism above is injective.
+\end{proof}
+\subsection{Algebraic Varieties}
+\begin{defi}
+$k$-\textbf{Ringed Space}: A couple $(X,\mathcal{O}_{X})$ consisting of a topological space $X$ and sheaf of functions valued at $k$ is called $k$-ringed space.
+
+\textbf{Morphism between Ringed Space}: Given two $k$-ringed space $(X,\mathcal{O}_{X})$ and $(Y,\mathcal{O}_{Y})$ is a continuous map:$\phi:X\rightarrow Y$ such that for every open subset $U\subset Y$ and every function $f\in\mathcal{O}_{Y}(U)$, the function $f\circ\phi:\phi^{-1}(U)\rightarrow k$ belongs to $\mathcal{O}_{X}(\phi^{-1}(U))$. We also obtain a $k-$algebra morphism:
+\begin{equation*}
+    \phi^{*}_{U}:\mathcal{O}_{Y}(U)\rightarrow \mathcal{O}_{X}(\phi^{-1}(U)),
+\end{equation*}
+for every open subset $U\subset Y$. We can deduce that for every $x\in X$, a morphism between germs of functionis:
+\begin{equation*}
+    \phi^{*}_{x}:\mathcal{O}_{Y,\phi(x)}\rightarrow\mathcal{O}_{X,x}.
+\end{equation*}
+We associate every algebraic subset to a $k-$ringed space. It's clear that every polynomial map between algebraic subsets induced that an associated morphism of $k-$ringed space.
+\end{defi}
+\begin{lem}
+Suppose $V\subset k^{2}$ and $W\subset k^{m}$ two algebraic subsets, the map above is a bijection:
+\begin{equation*}
+    \textbf{App.poly}(V,W)\cong \homo_{k-\text{ringed sp}}((V,\mathcal{O}(V)),(W,\mathcal{O}(W)))
+\end{equation*}
+\end{lem}
+\begin{proof}
+We have a map $\phi\mapsto \phi^{*}_{W}$:
+\begin{equation*}
+    \homo_{k-\text{ringed sp}}((V,\mathcal{O}_{V}),(W,\mathcal{O}_{W}))\rightarrow \homo_{k-\text{alg}}(\mathcal{O}(W),\mathcal{O}(V)))
+\end{equation*}
+whose composition with the map of proposition \ref{prop1.5.2} will be the bijection
+\begin{equation*}
+        \textbf{App.poly}(V,W)\cong \homo_{k-\text{alg}}(\mathcal{O}(W),\mathcal{O}(V))
+\end{equation*}
+It will be enough to show the map $\phi\mapsto\phi^{*}_{W}$ is injective. But this is clear, since we find that the map $\phi$ from the formula $\mathfrak{\phi(x)}=(\phi^{*}_{W})^{-1}(\mathfrak{m}_{x})$.
+\end{proof}
+
+\begin{defi}
+An affine algebraic variety is a $k-$ringed space isomorphic to an algebraic subset $V\subset k^{n}$ equipped with a sheaf of regular functions $\mathcal{O}_{V}$.
+
+A morphism of affine variety is a morphism of $k-$ringed space.
+\end{defi}
+We thus obtain a category defined as a full subcategory of the category of $k$-ringed spaces. By construction and the previous lemma, the following three categories are equivalent:
+\begin{enumerate}
+    \item The category $k-Var$ of $k$-affine varieties;
+    \item The category $k$-algebraic subset equipped with polynomial maps;
+    \item The opposite category $k-Alg^{opp}$ of reductive $k$-algebra of finite type.
+\end{enumerate}
+
+Note that we denote the affine variety $(k^{n},\mathcal{O}_{k^{n}})$ $\mathbb{A}^{n}_{k}$ or $\mathbb{A}^{n}$ and we call it affine space of dimension $n$.
+
+
+
+\subsubsection{Maximal Spectrum }
+We can construct directly functor $k-Alg^{opp}\rightarrow k-Var$ without passing through the algebraic subsets. In fact, if $A$ is a reductive $k-$algebra of finite type. We note $V:=\spm(A)$ the set of the maximal ideals and we equip Zariski topology with it. Thus the closed subsets are $V_{I}:=\{\mathfrak{m}\in\spm:\mathfrak{m}\supset I\}$ and whose basis of open sets are given by the principal open subsets $U_{f}:=\{\mathfrak{m}\in\spm(A):f\not\in \mathfrak{m}\}$. As $A$ is of finite type for $k$-algebraic closed, the Nullstellensatz implies that $A/\mathfrak{m}=k$ canonically. An element $f$ of $A$ provides a function $\spm(A)\rightarrow k$ that send $\mathfrak{m}$ to $\bar{f}\in A/\mathfrak{m}=k$. Then We call a function $f:U\subset\spm(A)\rightarrow  k $ is regular if all points $\mathfrak{m}\in U$ admit a neighborhood $U'$ such that $f|_{U'}=\frac{g|_{U'}}{h|_{U'}}$ with $g, h\in A$. We obtain a sheaf of functions for $\spm(A)$. Then the ringed space is an affine algebraic variety. we obtain an isomorphism with an algebraic subset by choosing a presentation $  k[X_{1},...,X_{n}]\twoheadrightarrow A$.
+\subsubsection{Subvariety}
+If $(X,\mathcal{O}_{X})$ is a ringed space, $\mathcal{O}_{X}$, $\mathcal{O}_{X}$ restricts to a sheaf for every open subset $U$, which is a ringed space $(U,\mathcal{O}_{X}|_{U})$. If $Y\subset X$ is closed, we endow it with the sheaf of functions $\mathcal{O}_{Y}$ which are locally restriction of functions in $\mathcal{O}_{X}$. 
+
+By those definitions, we notice that if $(X,\mathcal{O}_{X})$ is an affine algebraic variety, then so $(Y,\mathcal{O}_{Y})$ is. Concretely, if $(X,\mathcal{O}_{X})=\spm(A)$ and $Y=V_{I}$ for an ideal $I\subset A$, then $(Y,\mathcal{O}_{Y})=\spm(A/\sqrt{I})$. 
+
+When $U$ is principal open, we still have a similar result:
+\begin{lem}
+A principal open subset $U$ of affine variety $V$ is again an affine variety. More precisely, if $(V,\mathcal{O}_{V})=\spm(A)$ and $U=U_{f}$ for $f\in A\backslash\{0\}$, then $(U,(\mathcal{O}_{V})|_{U})=\spm(A[f^{-1}])$ and the inclusion $U\subset V$ corresponds to a canonical morphism  $A\rightarrow A[f^{-1}]$.
+\end{lem}
+\begin{proof}
+The morphism $\spm(A[f^{-1}])\rightarrow\spm(A)$ induces a homomophism of $\spm(A[f^{-1}])$ for $U_{f}$. The definition of regular function satisfies the conditions of sheaf of functions.
+\end{proof}
+In constrast, when $U$ is not principal, $(U,\mathcal{O}_{U})$ is not an affine variety.
+
+\begin{example}
+Suppose $U:=\mathbb{A}^{2}\backslash \{(0,0)\}\subset \mathbb{A}^{2}$, we have calculated (see previous exercise) that the restriction homomorphism $\Gamma(\mathbb{A}^{2},\mathcal{O}_{\mathbb{A}^{2}})\rightarrow \Gamma(U,\mathcal{O}_{U})$ is an isomorphism. If $U$ is an affine variety, the inclusion $U\hookleftarrow \mathbb{A}^{2}$ should be homomorphism, but it's not a bijection.
+\end{example}
+
+This is a first motivation to widen the language and to be able to speak of "gluing together" of affine varieties.
+
+\begin{defi}
+An algebraic variety over $k$ is a $k-$ringed space $(X,\mathcal{O}_{X})$ that admits a finite cover $X=\bigcup^{n}_{i=1}U_{i}$ such that $(U_{i}, (\mathcal{O}_{X})|_{U_{i}})$ are affine algebraic variety over $k$.
+
+A morphism between algebraic varieties is the morphism of $k-$ringed space.
+\end{defi}
+
+\begin{prop}
+Suppose $(X,\mathcal{O}_{X})$ an algebraic variety and $(V,\mathcal{O}_{V})=\spm(A)$ an affine algebraic variety. Then the map is a bijection:
+\begin{align*}
+        \homo_{k-\text{ringed sp}}((X,\mathcal{O}_{X}),\spm(A))&\rightarrow\homo_{k-\text{alg}}(A,\Gamma(X,\mathcal{O}_{X})),\\
+        \phi&\mapsto \phi^{*}_{V}
+\end{align*}
+is bijective.
+\end{prop}
+\begin{proof}
+Construct a bijection. Suppose $\phi:A\rightarrow\Gamma(X,\mathcal{O}_{X})$ a morphism of $k-$algebra. For every point $x\in X$, the map $f\rightarrow \phi(f)(x)$ is a morphism of $k-$algebra $A\rightarrow k$ whose kernel is a maximal ideal that we denote $\phi(x)$. So we obtain a map $X\rightarrow \spm(A)$. Note that if $U$ is a open subset of $X$ such that $(U,(\mathcal{O}_{X})|_{U})$ is affine variety, then $\phi|_{U}$ is the map associated with the composition morphism $A\rightarrow \Gamma(X,\mathcal{O}_{X})\rightarrow\Gamma(U,\mathcal{O}_{X})$, so we know that $\phi|_{U}$ induces a morphism of $k-$ringed space $(U,(\mathcal{O}_{X})|_{U})\rightarrow\spm(A)$. As $X$ is union of such open subsets, $\phi$ is a morphism of $k-$ringed space. 
+\end{proof}
+\section{Geometry of Algebraic variety}
+\subsection{Dimension}
+The theory of dimension of algebraic geometry is much more delicate than differential geometry or it's better by linear algebra. The intuition we have about some properties should give such theory:
+\begin{enumerate}
+    \item The dimension of the affine space $\mathbb{A}_{n}$ should be $n$;
+    \item If $V$ is irreducible and $W\subset V$ is defined by a single function $f\in\mathcal{O}(V)=\mathcal{O}(k^{n}/I_{V})$(non-zero and not invertible). Then we should have $\dim(W)=\dim(E)-1$ as in linear algebra.
+    \item As consequence of item 2, the dimension of irreducible variety $V$ should be the length of any maximal chain $V=V_{0}\supset V_{1}\supset...\supset V_{d}\not=\emptyset$ of irreducible closed sets.
+\end{enumerate}
+In fact, we can define the dimension of Noether topological space as the supremum of the length of chains of irreducible subsests as above. But we will rather start from an analogy with linear algebra: the dimension of vector space coincides with the cardinality of a maximal linearly independent family of linear forms. Here, we will replace linear independence of linear forms by the algebraic independence of polynomial functions, i.e. there is a set $S$ does not satisfy any non-trivial polynoimal equation with coefficients in $k$.
+
+\begin{defi}
+Suppose $V$ an irreducible variety,
+\begin{enumerate}
+    \item We notice that $\mathcal{M}(V):=\Frac(\mathcal{O}(V))=\Frac(\mathcal{O}(k^{n})/I_{V})$ the field of the integral domain $\mathcal{O}(V)$ and we call it the field of rational function for $V$;
+    \item We put $\dim(V):=\deg.\tr.(\mathcal{M}(V)/ k)$ (the transcendence degree, i.e.the largest cardinality of an algebraically independent subset of $\mathcal{M}(V)$ over $k$). Now let $V$ be any affine variety;
+    \item We put that $\dim(V):=\{\dim(W):W\subset V \text{irreducible}\}$;
+    \item We say that $V$ is pure if all its irreducible components have the same dimension.
+\end{enumerate}
+Here are some immediate consequences of this definition:
+\begin{enumerate}
+    \item[-] Since $\mathcal{M}(\mathbb{A}^{n}_{k})=k(X_{1},...,X_{n})$, we have $\dim(\mathbb{A}^{n}_{k})=n$;
+    \item[-] If $U$ is an open affine subset of irreducible variety $V$, then $\mathcal{M}(U)=\mathcal{M}(V)$, so $\dim(U)=\dim(V)$.
+    \item[-] If $\phi:V\rightarrow W$ is a finite and dominant morphism between irreducible varieties, then $\mathcal{M}(V)$ is a finite extension of $\mathcal{M}(W)$ so $\dim(V)=\dim(W)$.
+\end{enumerate}
+\end{defi}
+What's more, we have the following particular case of the desired property above.
+
+\begin{lem}
+Suppose $f\in\mathcal{O}(k^{n})$ non-constant, then $V_{f}$ is of pure dimension $n-1$.
+\end{lem}
+\begin{proof}
+Since $\mathcal{O}(k^{n})$ is  factorial, we know that $V_{f}=\bigcup^{v}_{i=1}V_{f_{i}}$ where $f_{1},...,f_{r}$ are the irreducible factors of $f$. So we can suppose $f$ is irreducible, in which case $\mathcal{O}(V_{f})$ is an integral $k-$algebra generated by the image $x_{i}$ of the indeterminates $X_{i}$. even if it means renumbering the indeterminates, we can also suppose that $f\not\in k[X_{1},...,X_{n-1}]$. This implies that 
+\end{proof}
+\begin{thm}
+Suppose $V$ is an irreducible affine variety, there exists an integer $d\in\mathbb{N}$ and a finite and surjective morphism $V\rightarrow \mathbb{A}^{d}_{k}$. Then we have $d=\dim(V)$.
+\end{thm}
+\begin{proof}
+
+\end{proof}
+\begin{rem}
+the proof shows more precisely that if $V$ is an irreducible algebraic subset of $k^{n}$, there exists a linear projection $k^{n}\twoheadrightarrow k^{d}$ which induced by restriction of a finite and surjective morphism $V\rightarrow k^{n}$.  
+\end{rem}
+\begin{exercise}
+Show that the product $V\times W$ of two irreducible affine varieties $V$ and $W$ is irreducible and $\dim(V\times W)=\dim(V)+\dim(W)$.
+\end{exercise}
+\begin{tcolorbox}
+\begin{proof}
+
+\end{proof}
+\end{tcolorbox}
+\begin{coro}
+Suppose $V$ an irreducible affine variety and $f\in\mathcal{O}(V)$ non-zero and not invertible. Then $V_{f}$ is of pure dimension $\dim(V)-1$.
+\end{coro}
+\begin{proof}
+
+\end{proof}
+\begin{coro}
+Suppose $V$ an irreducible affine variety. Then $\dim(V)$ is the length of any maximal chain of irreducible varieties $V\supset V_{1}\supset...\supset V_{d}\supset \emptyset$.
+\end{coro}
+\begin{coro}
+Suppose $V$ an irreducible affine of dimension $d$ and $f_{1},...,f_{r}\in\mathcal{O}(V)$. If $V_{f_{1},...,f_{r}}\not=\emptyset$, then all its irreducible components have dimension $\geq d-r$. 
+\end{coro}
+\begin{coro}\label{coroineq}
+Suppose $V,W$ two irreducible varieties of $\mathbb{A}^{n}$ which intersection is not empty. All irreducible component $Z$ of $V\bigcap W$ checked $\dim(Z)\geq \dim(V)+\dim(W)-n$ in other words $\codim(Z)\leq \codim(V)+\codim(W)$.
+\end{coro}
+To deduce this last corollary from the previous one, we observe that the intersection $V\bigcap W$ in $\mathbb{A}^{n}$ is identified with the intersection $\Delta\bigcap (V\times W)$ in $\mathbb{A}^{n}\times\mathbb{A}^{n}$ in which the diagonal $\Delta$ is defined by n equations $X_{i}-Y_{i},\ i=1,...,n$.
+\begin{exercise}
+Suppose $H\subset\mathbb{A}^{4}$hypersurface defined by $X_{1}X_{4}-X_{2}X_{3}$, show that it's an irreducible variety which contains the planes $V$ and $W$ defined respectively by the ideals $(X_{1},X_{3})$ and $(X_{2},X_{4})$. Calculate that the codimension of $V$, $W$ and $V\bigcap W$ in $H$ and in conclusion that the previous inequality is not true in $H$. Where does the previous proof get stuck? 
+\end{exercise}
+\begin{tcolorbox}
+\begin{proof}
+
+\end{proof}
+\end{tcolorbox}
+\begin{rem}
+The inequality of corollary \ref{coroineq} is strict in the next example: $V:= H$ as in exercise above, $r=2,\ f_{1}=X_{1},\ f_{2}=X_{2}$.
+\end{rem}
+\begin{exercise}
+Always in the same example show that $V_{(X_{1},X_{3})}$ cannot be defined by a single equation in $H$.
+\end{exercise}
+\begin{tcolorbox}
+\begin{proof}
+
+\end{proof}
+\end{tcolorbox}
+\begin{prop}
+If $W\subset V$ are two irreducible affine varieties, then note that $r:=\codim_{V}(W)$, there exists $f_{1},...,f_{r}\in\mathcal{O}(V)$ such that $W$ is an irreducible component of $V_{(f_{1},...,f_{r})}$ and every other irreducible components of $V_{(f_{1},..,f_{n})}$ are of codimension $r$.
+\end{prop}
+\begin{proof}
+Choose a maximal chain of irreducible closed subsets $V\supsetneq V_{1}\supsetneq...\supsetneq V_{r}=W$, so that $\codim_{V}(V_{s})=s$. We construct a family $f_{1},...,f_{s}$ such that $V_{s}\subset V_{(f_{1},...,f_{n})}$ by recurrence for $s$. And every irreducible components of $V_{(f_{1},...,f_{s})}$ is of codimension $s$. For $s=1$, it's sufficient to choose $f_{1}\in I_{V_{1}}\backslash \{(0)\}$ from the first corollary above. Suppose $f_{1},...,f_{s-1}$ built. Then the problem is to find $f_{s}\in I_{V_{s}}$ such that $f_{s}$ is not identically zero for each irreducible components of $V_{(f_{1},...,f_{s-1})}$. Note that $Y_{1},...,Y_{m}$ are the irreducible components of $V_{(f_{1},...,f_{s-1})}$.
+
+Choose for each $k=1,...,m$:
+\begin{enumerate}
+    \item A function $a_{k}\in I_{V_{s}}$ is not identically zero for the component $Y_{s}$, which is possible because $Y_{s}$ is not contained in $V_{s}$. And
+    \item A function $b_{k}$ is not identically zero for $Y_{k}$ but zero for $Y_{k'},\ k'\not=k$, which is possible because $Y_{k}$ is not contained in the union of $Y_{k'}$.
+\end{enumerate}
+Then the function $f_{s}=\sum_{k}a_{k}b_{k}$ agrees. In fact, $f_{s}\in I_{V_{s}}$ and for every $k=1,...,m$, we have that $(f_{s})|_{Y_{k}}=(a_{k})|_{Y_{k}}(b_{k})|_{Y_{k}}$ is not identically zero for $Y_{k}$ because $Y_{k}$ is irreducible so $\mathcal{O}(Y_{k})$ is integrated.
+\end{proof}
+This brings us to the following terminology:
+\begin{defi}
+Suppose $V\subset\mathbb{A}^{n}$ an irreducible closed subvariety of codimension $r$. We call that $V$ is a
+\begin{enumerate}
+    \item[-] complete intersection (set- theoretic): if there exists $f_{1},...,f_{r}\in\mathcal{O}(\mathbb{A}^{n})$ such that $V=V_{f_{1},...,f_{r}}$;
+    \item[-] complete intersection (scheme-theoretic); if there exists $f_{1},...,f_{r} $ such that $I_{V}=(f_{1},...,f_{r})$;
+    \item[-] complete irreducible locally at a point $x$: if there exists a open affine neighborhood $U$ of $x$ such that $U\bigcap V$ is complete intersection(scheme-theoretic) in $U$.
+\end{enumerate}
+\end{defi}
+The previous proposition implies that every point $x\in V$ admits an open affine neighborhood such that $U\bigcap V$ is complete intersection (set-theoretic) in $U$. We will see that if $x$ is a "non-singular" point of $V$, then $V$ is complete intersection locally at $x$. In general, it is difficult to verify if a sub-variety is complete intersection. By example, we show that a spatial curve the image of  $t\mapsto(t^{a},t^{b},t^{c})$ is complete intersection(set-theoretic) but in general not scheme-theoretic. 
+\begin{defi}
+Define $\mathcal{M}(V)$ and $\dim V$ for any algebraic variety. Denote
+\begin{equation*}
+    \mathcal{M}'(V):=\{(U,f)|u\subset V \text{open dense and }\ f\in\mathcal{O}_{V}(U)\}/\sim,
+\end{equation*}
+where $\sim$ is equivalence relation defined by $(U,f)\sim(U',f')$ iff there exists $U''\subset U\bigca U'$ open dense such that $f|_{U''}=f'|_{U''}$. This set is a $k-$algebra. For example, the multiplication is given by $\overline{(U,f)}\cdot\overline{(U',f')}=\overline{(U\bigcap U', f|_{U\bigcap U'}f'|_{U\bigcap U'})}$.
+\end{defi}
+When $V$ is irreducible, $\mathcal{M}'(V)$ is a field. In fact, for $(U,f)$ with $f\not=0$, the open $U_{f}\subset U$ where $f$ does not vanish is not empty, so dense. And the element $\overline{(U_{f},(f|_{U_{f}})^{-1})}$ is the inverse of $\overline{(U,f)}$. So we can put $\dim V=\deg.\tr_{k}(\mathcal{M}'(V))$. If in addition to being $V$ is affine, then the map $\mathcal{O}(V)\rightarrow \mathcal{M}'(V)$ which sends $f\in\mathcal{O}(V)$ to $\overline{(V,f)}$ canonically extends to a morphism of $k-$algebras $\mathcal{M}(V)\rightarrow\mathcal{M}'(V)$ which is in fact an isomorphism thanks to the proposition \ref{propprin} so that we find the previous definition in this case. For this reason, we will henceforth note $\mathcal{M}(V)=\mathcal{M}'(V)$ for any variety.          
+For any $V$, the construction of $\mathcal{M}(V)$ show that every open dense $U\subset V$, the map of restriction $\mathcal{M}(V)\rightarrow\mathcal{M}(U)$ is an isomorphism. We easily deduce that, by noting $V=\bigcup^{r}_{i=1}V_{i}$ the decomposition of $V$ into the irreducible components, we have an isomorphism $\mathcal{M}(V)=\prod^{r}_{i=1}\mathcal{M}(V_{i})$.
+\subsection{Rational Map}
+Suppose $V$ and $W$ two irreducible variety (not necessary affine). A rational map $\phi:V\rightarrow W$ is an equivalence class of couples $(U,\psi) $ which forms of a non-empty open subset $U\subset V$ and a morphism $\psi:U\rightarrow W$ and where we delcare that $(U,\psi)\sim(U',\psi')$ if there exists open dense $U''\subset U\bigcap U'$ such that $\psi|_{U''}=\psi'|_{U''}$.
+\begin{example}
+If $W=k$, we are talking about "rational function", and the set of such "functions" is the previously introduced field $\mathcal{M}(V)$.
+\end{example}
+We say that $\phi$ is dominant if one of its representatives $\psi:U\rightarrow W$ is dominant in which case all its representatives are. In this case, since $\mathcal{M}(U)=\mathcal{M}(V)$, we obtain an injective morphism of $k-$algebra $\phi^{*}:\mathcal{M}(W)\hookrightarrow\mathcal{M}(V)$. 
+\begin{lem}
+The map $\phi\mapsto\phi^{*}$ induces a bijection:
+\begin{equation*}
+    \text{App.rat.dom}(V,W)\cong \homo_{k-\text{alg}}(\mathcal{M}(W),\mathcal{M}(V))
+\end{equation*}
+\end{lem}
+\begin{proof}
+As the source and the target are invariant by passing to non-empty open sets, we can suppose that $V$ and $W$ are affine. Suppose $\Psi:\mathcal{M}(W)\rightarrow\mathcal{M}(V)$ a morphism of $k-$algebra. Since $\mathcal{O}(W)$ is $k-$algebra of finite type, there exists $h\in\mathcal{O}(V)$ such that $\Psi(\mathcal{O}(W))\subset \mathcal{O}(V)[h^{-1}]\subset \mathcal{M}(V)$. We can induce a morphism of varieties $\phi_{h}:U_{h}\rightarrow W$ where $U_{h}$ is the principal open subset defined by $h\not=0$. The equivalence class $(U_{h},\phi_{h})$ obviously does not depend on $h$ and defines a rational map $\phi:V\rightarrow W$ such that $\Psi=\phi^{*}$. By construction, the composition in the other direction is also the identity, we have constructed the bijection reciprocally.   
+\end{proof}
+The rational dominant maps are composed in an obvious way, and we can consider the category whose objects are the irreducible varieties and the morphisms between the objects are rational maps. According to the previous lemma, the category is the anti-equivalent to the category of the extension of field $k$ of finite type. 
+\begin{defi}
+We say that $V$ and $W$ are birational if they are isomorphic in this category, i.e. $\mathcal{M}(V)\cong\mathcal{M}(W)$.
+\end{defi}
+
+\begin{lem}
+Two irreducible varieties $V$ and $W$ are birational if and only if they contain two open affine varieties $U_{V}\subset V$ and $U_{W}\subset W$ isomorphic.
+\end{lem}
+\begin{proof}
+The assertion "if" is clear. Suppose $\mathcal{M}(V)=\mathcal{M}(W)$ and let's prove the other side.
+
+
+\end{proof}
+\begin{prop}
+Every irreducible variety $V$ of dimension $d$ is birational in a hypersurface $H\subset \mathbb{A}^{d+1}$.
+\end{prop}
+\begin{proof}
+The theory of field extension, we say that $\mathcal{M}(V)$ admit a base of transdence, i.e.  a family $x_{1},...,x_{d}$ such that $\mathcal{M}(V)$ is a separable finite extension of  $k(x_{1},...,x_{d})$. The theorem of primitive element tells us that such extension 
+\end{proof}
+\subsection{The construction theorem of Chevalley }
+The example of morphism $k^{2}\rightarrow k^{2},\ (x,y)\mapsto (x,xy)$, show that the image of a morphism is not necessary a sub-variety (locally closed)
+\begin{defi}
+$Constructible\ Set$:
+
+If $X$ is a topological space, we call that a subset $C\subset X$ is constructible if it is a finite union of locally closed subset(i.e. the intersection of open and closed subsets). In other words, the set $\mathcal{C}(X)\subset\mathcal{P}(X)$ of the constructible subsets of $X$ is the smallest stable subset of $\mathcal{P}(X)$ by unions and intersections and passing through complement and containing the open subsets of $X$. What's more, if $Y\in\mathcal{C}(X)$ is equipped with the induced topology, we have $\mathcal{C}(Y)\subset \mathcal{C}(X)$ (via the obvious inclusion $\mathcal{P}(Y)\subset\mathcal{P}(X)$).
+
+\end{defi}
+\begin{thm}\label{thmche}
+Suppose $\psi:V\rightarrow W$ a morphism of varieties. Then the image of a constructible subset of $V$ is constructible in $W$.
+
+before starting the proof, let's make some reductions:
+\begin{enumerate}
+    \item Since a constructible subset is finite union of subvarieties(locally closed), it is sufficent to show that for every $\phi:V\rightarrow W$, the image $\phi(V)\subset W$ is constructible.
+    \item Since $W$ is the finite union of affine open sub-varieties, and such a subset $X\subset W$ is constructible iff 
+    \item For the same reason, we can suppose that $V$ is also affine.
+    \item Since $V$ is the fintie union of irreducible components, we can suppose $V$ is irreducible.
+    \item Finally, replacing $W$ by closed subvariety $\overline{\phi(V)}$ and since a constructibe subset of the closed subset is constructible, we can suppose that $\phi$ is dominant.
+\end{enumerate} 
+\end{thm}
+This motivates the following result, which is the key lemma.
+\begin{lem}
+Suppose $\phi:V\rightarrow W$ a dominant morphism between irreducible affine varieties, then $\phi(V)$ is contained in an open subset of $W$.
+\end{lem}
+\begin{proof}
+Let's put $K:=\mathcal{M}(W)$. The lemma of Noether normalisation theorem applys to the finite dimension $K$-algebra $R=K\otimes_{\mathcal{O}(W),\phi^{*}}\mathcal{O}(V)$, we claim that it's generated by a family of elements $x_{1},...,x_{n}\in R$ such that $x_{1},...,x_{m}$ are algebraically independent over $K$ and $x_{m+1},...,x_{n}$ are integral in $k[x_{1},...,x_{m}]$. In particular, for $j> m$, there exists a unitary polynomial $P_{j}\in K[x_{1},...,x_{m}][T]$ such that $P_{j}(x_{j})=0$. We can find $h\in\mathcal{O}(W)$ such that 
+\begin{enumerate}
+    \item The $x_{i}$ belong to $\mathcal{O}(W)[h^{-1}]\otimes_{\mathcal{O}(W),\phi^{*}}\mathcal{O}(V)\cong \mathcal{O}(V)[(\phi^{*}(h)^{-1})]$
+    \item The $P_{j}$ belong to $\mathcal{O}(W)[h^{-1}][x_{1},...,x_{m}][T]$ 
+\end{enumerate}
+Then we have two inclusions:
+\begin{equation*}
+    \mathcal{O}(W)[h^{-1}]\hookleftarrow \mathcal{O}(W)[h^{-1}][x_{1},...,x_{m}]\subset \mathcal{O}(V)[\phi^{*}(h)^{-1}]
+\end{equation*}
+where $\mathcal{O}(W)[h^{-1}][x_{1},...,x_{m}]$ is an algebra of polynomial over $\mathcal{O}(W)[h^{-1}]$ and $\mathcal{O}(V)[(\phi^{*}h)^{-1}]$ is finite generated module over $\mathcal{O}(W)[h^{-1}][x_{1},...,x_{m}]$.
+
+Suppose $U_{h}$ is a principle open subset of $W$ defined by $h$. So we have $\mathcal{O}(W)[h^{-1}]=\mathcal{O}(U_{h})$. What's more,  the $\phi^{-1}(U_{h}) $ is principal open of $V$ defined by $\phi^{*}(h)$, so $\mathcal{O}(V)[(\phi^{*})^{-1}]=\mathcal{O}(\phi^{-1}(U_{h}))$. The two inclusion above show that the morphism $\phi|_{\phi^{-1}(U_{h})}:\phi^{-1}(U_{h})\rightarrow U_{h}$ is factorized into 
+\begin{equation*}
+    \phi^{-1}(U_{h})\rightarrow U_{h}\times \mathbb{A}^{m}\rightarrow U_{h},
+\end{equation*}
+where the first morphism is finite dominant(so surjective) and the second morphism is a projection for $U_{h}$, so is also surjective. It follows that $U_{h}\subset \phi(V)$. 
+\end{proof}
+Let's continue to finish the proof of theorem\ref{thmche}:
+
+We prove by recursion for $\dim(V)$ that the image of every morphism $\phi: V\rightarrow W$ of source affine variety $V$ is constructible in target $W$. We have seen that one could suppose that $V$ irreducible and $\phi$ dominant. Then the above lemma provides us a open $U\subset W$ includes in $\phi(V)$. So we have that $\phi(V)=U\bigcup \phi(V\backslash\phi^{-1}(U))$. Or, $V\backslash\phi^{-1}(U)$ is closed proper of $V$. So its irreducible components are of dimension $<\dim(V)$. By hypothsis of recursion, we say that $\phi(V\backslash\phi^{-1}(U))$ is constructible, and we can deduce that $\phi(V)$ also is.
+
+\subsection{(co)tangent spaces}
+Our first goal is to find a reasonable definition for algebraic varieties. The first idea comes from differential geometry. At least for $k=\mathbb{R}$, we say that the tangent at a point $(a,b)$  for plane curve defined by an equation $f(x,y)=0$ with $f$ differential is a line defined by the equation 
+\begin{equation*}
+    \frac{\partial f}{\partial X}(a,b)(x-a)+\frac{\partial f}{\partial Y}(a,b)(Y-b)=0
+\end{equation*}
+Of course, this equation can define a straight line. Its coefficients should be $(\frac{\partial f}{\partial X}(a,b),\frac{\partial f}{\partial Y}(a,b))\not=0$. If $f\in k[X,Y]$, then we have at least $(\frac{\partial f}{\partial X},\frac{\partial f}{\partial Y})\not=(0,0)$ in $k[X, Y]$. We did an exercise in the TD section that the algebraic subset defined by the ideal $(f, \frac{\partial f}{\partial X}, \frac{\partial f}{\partial Y})$ is finite, and the equation above is a line, except possibly at a finite number of points. These points are called singular.
+
+Inspired by this simple example, we are brought to the following definition:
+\begin{defi}
+Suppose $V$ an algebraic subset and $P=(a_{1},...,a_{n})$ of $V$. We define an affine tangent space $T_{p}^{a}V$ of $V$ at point $P$  as sub affine space of $k^{n}$ solution  of the following linear system 
+\begin{equation*}
+    \frac{\partial f}{\partial X_{1}}(P)(x_{1}-a_{1})+...+\frac{\partial f}{\partial X_{n}}(P)(x_{n}-a_{n}),\ \ \ \ f\in I_{V}
+\end{equation*}
+We notice that $T_{P}V$ the vector subspace of $k^{n}$ such that $T_{P}^{a}V=P+T_{P}V$. The point $P$ is called non-singular(or regular, or smooth, or even simple) if $\dim(T_{p}V)=\dim(V)$.   
+\end{defi}
+
+
+\begin{example}
+Suppose $V\subset k^{2}$ the curve defined by $Y^{2}-X^{3}$. The tangent affine space at $P=(1,1)$ is the line equation $-3x+2y=-1$. The affine tangent space at a point $O=(0,0)$ is the entire plane $k^{2}$. The point $O$ is singular. 
+
+
+\end{example}
+It is customary to denote $\text{d}x_{1},...,\text{d}x_{n}$ the dual basis of the canonical basis of $k^{n}$. And denote that $\text{d}_{p}f:=\sum^{n}_{i=1}\frac{\partial f}{\partial X_{i}}(P)\cdot\text{d}x_{i}$, which is a closed linear form for $k^{n}$. Then 
+\begin{equation*}
+    T_{P}V=\bigcap_{f\in I_{V}}\ker(\text{d}_{P}f). 
+\end{equation*}
+
+Using the formula $\text{d}_{P}fg=f(P)\text{d}_{P}g+g(P)\text{d}_{P}f$, we see that we also have $T_{P}V=\bigcap^{r}_{i=1} \ker(\text{d}_{P}f_{k})$ for all generators $\{f_{1},...,f_{r}\}$ of $I_{V}$. In other words, $T_{P}V$ is the kernel of Jacobian matrix:
+\begin{equation*}
+    \jac_{P}(f_{1},...,f_{r})=
+\begin{pmatrix}
+\frac{\partial f_{1}}{\partial X_{1}}(P) & \dots & \frac{\partial f_{r}}{\partial X_{1}}(P)\\
+\vdots & & \vdots\\
+\frac{\partial f_{1}}{\partial X_{r}}(P) &\dots & \frac{\partial f_{r}}{\partial X_{r}}(P)
+\end{pmatrix}
+\end{equation*}
+In particular, we have $\dim T_{P}V=n-\rank(\jac_{P}(f_{1},...,f_{r}))$. As for the rank of a matrix is the maximal size of submatrix......... We have 
+\begin{lem}
+For any $s\in\mathbb{N}$, $\{P\in V, \dim(T_{P}V)\geq s\}$ is closed in $V$. 
+\end{lem}
+We will see later that the min of the function $P\rightarrow \dim(T_{P}(V))$ is $d=\dim V$. Thanks to the lemma above, it implies that the set of regualr points of $V$ is open and dense in $V$. Previously, let us explain the functorility of $T_{P}V$. Suppose $\phi: k^{n}\rightarrow k^{m}$ a polynomial map, so we note that the component $\phi_{1},....,\phi_{m}\in \mathcal{O}(k^{n})$. For $P\in k^{n}$, denote $T_{P}\phi$ the linear map $k^{n}\rightarrow k^{m}$ which matrix in the canonical basis is 
+\begin{equation*}
+    \begin{pmatrix}
+    \frac{\partial \phi_{1}}{\partial X_{1}}(P)&\dots& \frac{\partial \phi_{1}}{\partial X_{n}}(P)\\
+    \vdots&\dots&\vdots\\
+    \frac{\phi_{m}}{\partial X_{1}}(P)&\dots& \frac{\phi_{m}}{\partial x_{n}}(P)
+    \end{pmatrix}
+\end{equation*}
+\begin{lem}
+If $\phi(V)\subset W$, then $T_{P}\phi(T_{P}V)\subset T_{\phi(P)}W$.
+\end{lem}
+\begin{proof}
+As the differential calculation, for all $i=1,...,n$ and functions $f\in\mathcal{O}(k^{m})$, we have formula:
+\begin{equation*}
+    \frac{\partial f\circ\phi}{\partial X_{i}}(P)=\sum^{m}_{j=1}\frac{\partial \phi_{j}}{\partial X_{i}}(P)\cdot\frac{\partial f}{\partial X
+    _{j}}(\phi(P)),
+\end{equation*}
+which can be summed up in
+$\dif_{P}(f\circ\phi)=d_{\phi(P)}f\circ T_{P}\phi$. Suppose further that $f\in I_{W}$. Then $f\circ \phi\in I_{V}$ so $T_{P}V\subset\ker \dif_{P}(f\circ\phi)$ and therefore $T_{P}\phi(T_{P}V)\subset \ker \dif_{P}f$. This is true for every function $f\in I_{W}$, we have $T_{P}\phi(T_{P}V)\subset T_{\phi(P)}W$.
+\end{proof}
+
+The approach is familiar in calculus and differential geometry. Here it has a big disadvantage of depending a priori on the embedding of $V$ to the affine space $k^{n}$. For example, it's not clear at this point that if $\phi$ induces an isomorphism of varieties, then $T_{P}\phi$ is an isomorphism for tangent space. We would like a more intrinsic definition, not depend on the point $P$ or $\mathcal{O}(V)$. In fact, the tangent space at $P$ should only depend on the local ring $\mathcal{O}_{V, P}$ of the germs of regular functions. 
+
+The second inspiration also comes from differential geometry: we can see the vector fields as the derivation algebra of functions in $C^{\infty}$. And locally the tangent vectors at $P$ scalar derivations of the algebra of germs
+of functions in $C^{\infty}$ at $P$. 
+
+Here is an algebraic definition for derivation:
+\begin{defi}
+Suppose $A$ a $k-$algebra and $M$ an $A$-module. A derivation of $A$ with values in $M$ is a $k$-linear map  $\partial: A\rightarrow M$ such that 
+\begin{equation}\label{partialmulti}
+    \forall f,g\in A,\partial f\cdot g=f\partial g+ g\partial f
+\end{equation}
+We denote $\der_{k}(A,M)$ the $k$-vector space of these derivations.
+\end{defi}
+
+Then let $P$ be a point of affine algebraic variety $V$, which therefore corresponds to a morphism of $k-$algebra $\pi_{P}:\mathcal{O}(V)\rightarrow k, f\rightarrow f(P)$, which extends $\mathcal{O}_{V,P}\xrightarrow{\pi_{P}} k$(which kernel is the unique maximal ideal of the ring $\mathcal{O}_{V,P}$of the germs of the functions at $P$). Via $\pi_{P}$, we can consider $k$ as a $\mathcal{O}(V)$-module or $\mathcal{O}_{V,P}$-mdoule, so we denote as $k_{P}$ to avoid the ambiguity. Then it's natural to consider
+\begin{equation*}
+    \der_{k}(\mathcal{O}_{V,P}, k_{P})=\{\partial\in \homo_{k-ev}(\mathcal{O}_{V,P}, k), \forall f,g\in \mathcal{O}_{V, P},\ref{partialmulti}\ holds\}
+\end{equation*}
+as the abstract tangent vector space of $V$ at $P$.
+\begin{rem}
+If $\psi: V\rightarrow W$ is a morphism of varieties, then the composition with $\mathcal{O}_{W,\psi(P)}\rightarrow\mathcal{O}_{V,P}$ gives a $k-$linear map 
+\begin{equation*}
+    D_{P}\psi:\der_{k}(\mathcal{O}_{V,P}, k_{P})\rightarrow \der_{k}(\mathcal{O}_{W,\psi(P)}, k_{\psi(P)})
+\end{equation*}
+\end{rem}
+\begin{rem}
+Given $\mathcal{
+O}_{V,P}$ as the localisation of $\mathcal{O}(V)$
+\end{rem}
+\begin{lem}
+Suppose $V\subset k^{n}$ an algebraic subset and $P\in V$. Denote $\alpha_{\mathbb{A}^{n},P}:\der_{k}(\mathcal{O}(k^{n}, k_{P})\xrightarrow{\cong} k^{n}$ as the isomorphism that sends the base $(\frac{\partial}{\partial X_{i}}|_{P})_{i=1,...,n}$ to the canonical base.
+
+Then we have the following factorization:
+
+\begin{center}
+    % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAB13YAnAfWADWAXwAUnALZ0cACwDGjYAHlRAgHrAwQgJSkABAP5ptIIaXSZc+QigBM5KrUYs2ajUJNmQGbHgJE7AIwO9MysiCAAKvwACkIAah7mPlZEZEHUIc7hnDz8wmLskjLyDEqicTqumlomDjBQAObwRKAAZtwQ4kgAzNQ4EEhkIDh0WAxs0hAQAokg7Z1IdsMDiAF9o+Phk9Oz812IQ-1Ia46hbJyMaNJ0-BJS0gBGD8AAgkLqmqSxux37vcuLDJOMIcdiXa78OJfdxCChCIA
+\begin{tikzcd}
+{\der_{k}(\mathcal{O}(k^{n}), k_{p})} \arrow[rr, "{\alpha_{\mathbb{A}^{n},P}}"] &  & k^{n}                  \\
+{\der_{k}(\mathcal{O}(V),k_{P})} \arrow[u, hook] \arrow[rr, "{\alpha_{V,P}}"]   &  & T_{P}V \arrow[u, hook]
+\end{tikzcd}
+\end{center}
+Moreover, for every polynomial map $V\subset k^{n}\rightarrow W\subset k^{n}$, we have the following diagram commutes:
+
+\begin{center}
+    % https://tikzcd.yichuanshen.de/#N4Igdg9gJgpgziAXAbVABwnAlgFyxMJZABgBpiBdUkANwEMAbAVxiRAB13YAnAfWADWAXwAUnALZ0cACwDGjYAHlRANQCUpAAQD+aIWpBDS6TLnyEUAJnJVajFmwAq-AApCVh4yAzY8BItYAjLb0zKyIIM7AnGjSWCIuakIA6p4mvuZEZMHUoQ4RnDz8wmLskjLyDEqiyRo60eyx8Yn6hrYwUADm8ESgAGbcEOJIZCA4EEiBufbhHOyMsXT8KqRuaSADQ0gAzNTjSNZ2YWycC9JLwMmkMXEJSeubw4ij+4i7R-kgACKuQjdYD0GTymYwmiEOeVmUTc-zaQiAA
+\begin{tikzcd}
+{\der_{k}(\mathcal{O}(V), k_{p})} \arrow[rr, "{\alpha_{V,P}}"] \arrow[d, "D_{P}\phi"] &  & T_{P}V \arrow[d, "T_{P}\phi"] \\
+{\der_{k}(\mathcal{O}(W),k_{\phi(P)})} \arrow[rr, "{\alpha_{W,\phi(P)}}"]             &  & T_{\phi(P)}W                 
+\end{tikzcd}
+\end{center}
+\end{lem}
+\begin{proof}
+The left vertical arrow of the first diagram is induced by the $k-$algebra morphism $\mathcal{O}(k^{n})\twoheadrightarrow \mathcal{O}(V)$. So it's injective, and its image is 
+\begin{equation*}
+    \{\partial\in\der_{k}(\mathcal{O}(k^{n}),k_{P}):\forall f\in I_{V}, \partial f=0\}
+\end{equation*}
+The image of subspace by $\alpha_{\mathbb{A}^{n},P}$ is by definition:
+\begin{equation*}
+    \{(x_{i})_{i=1,...,n}\in k^{n}:\forall f\in I_{V}, \sum^{n}_{i=1}x_{i}\frac{\partial}{\partial X_{i}}|_{P}(f)=0  \},
+\end{equation*}
+which is none other than $T_{P}V$. For second diagram, it's sufficient to verify that the matrix giving $D_{P}\phi$ in the base $\frac{\partial}{\partial X_{i}}$ is given for $T_{P}\phi$, which is a direct calculation.
+\end{proof}
+     This lemma therefore gives an intrinsic definition of the tangent space as the space of derivations, and in particular it implies that the polynomial map $\phi$ induces an isomorphism of varieties. Then $T_{P}\phi$ induces an isomorphism of tangent spaces. Here is an example;
+     
+\begin{exercise}
+Suppose $V\subset k^{2}$ the algebraic subset which is unions of two axes of coordinate and the diagonal line $x=y$. And $W$ is the union of three axes of coordinates. Show that singular place is origin singleton in each case. calculate tangent space at this point and conclude $V$ and $W$ are not isomorphic varieties.
+\end{exercise}
+\begin{tcolorbox}
+\begin{proof}
+
+\end{proof}
+\end{tcolorbox}
+Here is a more basic application:
+\begin{prop}
+Suppose $V$ is an algebraic variety of dimension $d$, for all $p$, we have $\dim T_{P}V \geq d$ with equality for $P$ in every open dense subset.
+\end{prop}
+\begin{proof}
+We already know that $\{P\in V: \dim T_{P}V\geq d \}$ is closed. So all we have to do is to show that $\{P\in V: \dim T_{P}V=d\}$ is open dense not empty. According to that there exists an open affine subset $U\subset V$, an affine open $U'$ of irreducible hypersurface $H\subset\mathbb{A}^{d+1}$ and an isomorphism $\phi:U\rightarrow U'$. For $P\in U$, as $\mathcal{O}_{V,P}=\mathcal{O}_{U,P}$, we have that $T_{P}U=T_{P}V$, so $T_{P}V\cong T_{\phi(P)}U'=T_{\phi(P)}H$. So it suffices to prove the desired result for $V=H=V_{f}$ where $f\in k[X_{1},...,X_{d+1}]$ is irreducible. In this case, we have $T_{P}H=\ker(\dif_{P}f)$ with $\dif_{P}f=\sum^{d+1}_{i=1}\frac{\partial f}{\partial X_{i}}(P)\dif x_{i}$. If the polynomial function $\frac{\partial f}{\partial X_{i}}$ is zero over $V$, then $f$ divides $\frac{\partial f}{\partial X_{i}}$ in $k[X_{1},...,X_{d+1}]$. For the reasoning on the degrees on $X_{i}$, we have $\frac{\partial f}{\partial X_{i}}=0$. Since $f$ is not constant, it must exist $i$ such that $\frac{\partial f}{\partial X_{i}}$ is identically zero over $V$. Then $\dif f$ is not identically zero over $V$ and the set $\{P\in V: \dif_{P}f\not=0\}=\{p\in V:\dim  T_{P}V=d\}$ is open not empty.
+\end{proof}
+
+\begin{defi}
+Suppose $V$ an algebraic variety and $P\in V$. We define the tangent space $T_{P}V$ as the space of derivations $\der_{k}(\mathcal{O}_{V,P}, k_{P})$.
+\end{defi}
+
+As above, every morphism $\phi:V\rightarrow W$ induce a $k$-linear map $T_{P}\phi:T_{P}V\rightarrow T_{\phi(P)}W$.    
+
+The following lemma shows the concrete calculation for the tangent space:
+\begin{lem}\label{derisomorphism}
+Suppose $A$ a $k$-algebra and $\mathfrak{m}\subset A$ a maximal ideal and the residual field $k=A/\mathfrak{m}$. Then the map $\partial\rightarrow \bar{\partial}:=\partial|_{\mathfrak{m}}$ induces an isomorphism of $k-$ vector space:
+\begin{equation*}
+    \der_{k}(A,A/\mathfrak{m})\xrightarrow{\cong} \homo_{k-ev}(\mathfrak{m}/\mathfrak{m}^{2},k).
+\end{equation*}
+\end{lem}
+\begin{proof}
+Denote $\bar{f}$ as the image of $f$ in $k=A/\mathfrak{m}$. The formula $\partial f\cdot g=\bar{f}\partial g+\bar{g}\partial f$ shows that $\partial|_{\mathfrak{m}^{2}}=0$ hence the existence of $\overline{\partial}:\mathfrak{m}/\mathfrak{m}^{2}\rightarrow k$. In other way, let's start from $\theta:\mathfrak{m}/\mathfrak{m}^{2}\rightarrow k$ and put $\partial f:=\theta(f-\bar{f})\in k$(here we see that $\bar{f}$, an element of residual field $A/\mathfrak{m}$as an element of field of constant $k\subset A$ thanks to the canonical identity $k=A/\mathfrak{m}$). Then the equality:
+\begin{equation*}
+   fg-\bar{f}\bar{g}=\bar{f}(g-\bar{g})+\bar{g}(f-\bar{f})+(f-\bar{f})(g-\bar{g}) 
+\end{equation*}
+Show that $\partial$ is a derivation $A\rightarrow A/\mathfrak{m}$. One can easily check that those two maps are reciprocally bijection. 
+\end{proof}
+\begin{exercise}
+The attentive reader notices that the isomorphism $\der_{k}(A_{\mathfrak{m}},A/\mathfrak{m})\rightarrow  \der_{k}(A,A/\mathfrak{m})$ implies a morphism $\mathfrak{m}/\mathfrak{m}^{2}\rightarrow (\mathfrak{m}A_{\mathfrak{m}})/(\mathfrak{m}A_{\mathfrak{m}})^{2}$ is an isomorphism of $k$-space vector. Directly justify this last fact.  
+\end{exercise}
+
+\begin{tcolorbox}
+\begin{proof}
+
+\end{proof}
+\end{tcolorbox}
+The lemma above justify the terminology "Cotangent space" for the vector space $\mathfrak{m}_{V,P}/\mathfrak{m}_{V,P}^{2}$ where $P$ is a point of a variety and $\mathfrak{m}_{V,P}$ is the maximal ideal of $\mathcal{O}_{V,P}$. Its elements are analogous to "differential forms" in differential geometry.
+\begin{example}
+In the case of $\mathbb{A}^{n}$ and $P=(a_{1},...,a_{n})$, we have $\mathfrak{m}_{\mathbb{A}^{n},P}=(X_{1}-a_{1},...,X_{n}-a_{n})$ and it is easily verified that $n$ elements $\dif x_{i}:=(X_{i}-a_{i})\mod (\mathfrak{m}_{\mathbb{A}^{n},P})^{2}$ form a $k$-basis of $\mathfrak{m}_{\mathbb{A}^{n},P}/\mathfrak{m}_{\mathbb{A}^{n},P}^{2}$. Then suppose $f\in \mathfrak{m}_{\mathbb{A}^{n},P}$ and denote the image of $f$ in the cotangent space $\mathfrak{m}_{\mathbb{A}^{n},P}/\mathfrak{m}_{\mathbb{A}^{n},P}^{2}$ as $\dif_{P}f$. The choice of this notation is not arbitrary. Since we calculate that $\dif_{P}f=\sum^{n}_{i=1}\frac{\partial f}{\partial X_{i}}(P)\dif x_{i}$. Now suppose $P\in V\subset \mathbb{A}^{n}$. Then we have that $I_{V}\subset \mathfrak{m}_{\mathbb{A}^{n},P}$ or either by using our first definition of $T_{P}V$, we obtain an isomorphism \begin{equation*}
+    \mathfrak{m}_{\mathbb{A}^{n},P}/(\mathfrak{m}^{2}_{\mathbb{A},P}+I_{V})\rightarrow \mathfrak{m}_{V,P}/\mathfrak{m}_{V,P}^{2}.
+\end{equation*}       
+\end{example}
+\subsection{Non-singular points}
+\subsubsection{Local parameters}
+Suppose $P$ a point of irreducible algebraic variety $V$ of dimension $d$. The Nakayama lemma implies that the dimension of $\mathfrak{m}_{V,P}/\mathfrak{m}^{2}_{V,P}$ is also the minimal nomber of generator of $\mathfrak{m}_{V,P}$ as $\mathcal{O}_{V,P}-$module. More precisely, a family $f_{1},...,f_{r}\in\mathfrak{m}_{V,P}$   
+\begin{lem}
+If $(f_{1},...,f_{d})$
+are the local parameters at a non-singular point 
+$P$, then there exists an affine open neighborhood $U$ of $P$ such that every $f_{i}$ is the germ of regular functions $f_{i}\in \Gamma(U,\mathcal{O}_{V})$ and $V_{(f_{1},...,f_{d})}\bigcap U=\{P\}$.
+
+\end{lem}
+\begin{proof}
+
+\end{proof}
+\begin{example}
+
+\end{example}
+\subsubsection{Local rings}
+suppose $A$ an ring and $I$ an ideal of $A $, the sequence of ideals of $A$ $(I^{n})_{n\in\mathbb{N}}$ is decreasing and we denote 
+\begin{equation*}
+    gr_{I}(A):=\bigoplus_{n\in\mathbb{N}}I^{n}/I^{n+1}=A/I\oplus A/I^{2}\oplus... 
+\end{equation*}
+Otherwise, we obtain by passing to the quotients a projective system $A/I\leftarrow A/I^{2}\leftarrow...
+$ so we have the limit
+\begin{equation*}
+    \hat{A_{I}}:=\varprojlim_{n\in\mathbb{N}}A/I^{n}=\{(a_{n})_{n\in\mathbb{N}}\in \prod_{n\in\mathbb{N}}A/I^{n}, a_{n+1}\equiv a_{n}\mod I^{n}\}
+\end{equation*}
+
+
+\begin{example}
+\begin{equation*}
+    \hat{A}_{\mathfrak{m}}=k[[X_{1},..,X_{n}]]=\{\sum_{(i_{1},...,i_{n}\in\mathbb{N}^{n})}a_{i_{1},...,i_{n}}X^{i_{1}}_{1}...X^{i_{n}}_{n}\}
+\end{equation*}
+\end{example}
+\begin{prop}
+Suppose that $P$ is a non-singular point of variety $V$ of dimension $d$ and $f_{1},...,f_{d}\in \mathfrak{m}_{V,P}$ are local parameters at $P$. Then we have an isomorphism
+\begin{equation*}
+    k[[X_{1},...,X_{d}]]\rightarrow \hat{\mathcal{O}}_{V,P},\ \ \ X_{i}\rightarrow f_{i}.
+\end{equation*}
+More general, if $\phi:V\rightarrow W$ is a morphism such that $\phi(P)$ is non-singular and $T_{P}\phi$ is an isomorphism, then $\phi^{*}_{P}:\mathcal{O}_{W,\phi(P)}\rightarrow \mathcal{O}_{V, P}$ induces an isomorphism of complement of local rings $\hat{\mathcal{O}}_{W,\phi(P)}\rightarrow \hat{\mathcal{O}}_{V,P}$, as well as the graded ring $gr\mathcal{O}_{W,\phi(P)}\rightarrow gr\mathcal{O}_{V,P  }$
+\end{prop}
+
+\begin{proof}
+
+
+\end{proof}
+\begin{example}
+
+\end{example}
+\subsubsection{Regular local ring}
+In the previous proof, we have the definition of Krull dimension of Noether ring as maximal length of the chain $\mathfrak{p}_{0}\subset\mathfrak{p}_{1}\subset...\subset\mathfrak{p}_{d}$ of proper prime ideals. Note that in such a chain of maximum length, we have $\mathfrak{p}_{0}=(0)$ iff $A$ is integral. If $A$ is more local of maximal ideal $\mathfrak{m}$, we call $A$ is regular if $\dim_{A/\mathfrak{m}}(\mathfrak{m}/\mathfrak{m}^{2})=\dim(A)$.
+\begin{exercise}
+Suppose $P$ a point of an algebraic variety $V$, show that $\dim \mathcal{O}_{V,P}=\dim V$. Deduce that $P$ is non-singular iff $\mathcal{O}_{V,P}$ is a regular ring.
+\end{exercise}
+\begin{tcolorbox}
+\begin{proof}
+
+\end{proof}
+\end{tcolorbox}
+We can show that a regular ring is integral, integrally closed, and factorial. In dimension 1, we have even better result. 
+\subsection{Desingularization of curves}
+\begin{lem}
+Suppose $(A,\mathfrak{m})$ a noetherian local integral ring of dimension 1, the following properties are equivalent:
+\begin{enumerate}
+    \item $A$ is regular;
+    \item $A$ is principal(so a discrete valuation ring)
+    \item $A$ is normal(integrally closed).    
+\end{enumerate}
+\end{lem}
+\begin{proof}
+
+\end{proof}
+\begin{rem}
+For a local ring of dimension 1, being normal is much weaker than being regular. For example, the local ring at $O$ of $V=V_{XY-Z^{2}}$ is not regular but we can show that it is integrally closed.
+\end{rem}
+\subsubsection{Discrete valuation ring}
+A ring that satisfies the conditions of the lemma is called a discrete valuation ring. And an element $\omega\in A$ that generates $\mathfrak{m}$ is called uniformiser of $A$. The termnology comes from the theory of valuation field. In fact, define a function $v: \Frac(A)\rightarrow \mathbb{Z}\bigcup\{\infty\}$ by sending 0 to $\infty$ and $x\not=0$ to the unique integer $v(x)$ such that $x\in A^{\times}\omega^{v(x)}$. Then we have the properties following:
+\begin{enumerate}\label{valuation}
+    \item $v(x)=\infty\leftrightarrow x=0$;
+    \item $v(xy)=v(x)+v(y)$;
+    \item $v(x+y)\geq \min(v(x)+v(y))$
+\end{enumerate}
+Moreover we find $A$ with $A=\{x\in \Frac(A),v(x)\geq0\}$. The function $v$ is an valuation in the following sense:
+\begin{defi}
+Suppose $K$ a field. And a valuation is a function $v:K\rightarrow \mathbb{R}\bigcup\{\infty\}$ which satisfies the properties \ref{valuation} above. It 's called  discrete if $v(K^{\times})$ is a discrete subgroup of $\mathbb{R}$, or called normalised discrete if $v(K^{\times})=\mathbb{Z}$.
+
+And if $K$ is a field equipped with a normalised discrete valuation $v$, we have:
+\begin{enumerate}
+    \item $A:=\{x\in K: v(x)\geq 0\}$ is a discrete valuation ring or valuation ring, with maximal ideal $\mathfrak{m}:=\{x\in K: v(x)>0\}$;
+    \item $A^{\times}:=\{x\in K:v(x)=0\}$ and $\omega\in K$ uniformiser  of $A$ iff $v(\omega)=1$;
+    \item $K$ is the fraction field of $A$.
+\end{enumerate}
+\end{defi}
+we will see later how to define a smooth algebraic variety structure of dimension 1 on the set of all normalized discrete valuations of an extension of $k$ of degree of transcendence 1.
+\subsubsection{Desingularsation of curves}
+The last lemma tells us that a curve $C$ is smooth at a point $P$ iff the local ring $\mathcal{O}_{C,P}$ is normal. This is not necessarily an effective way to check if a point is well-regular, but this suggests to erase singular points: taking integral closure. We need the following finiteness lemma:
+\begin{thm}
+Suppose $A$ an integral $k-$algebra of finite type, and $L$ a finite extension of $K:=\Frac(A)$. Then integral closure $B$ of $A$ in $L$ is an $A$-module of fintie type and also a $k-$algebra of finite type. 
+\end{thm}
+\begin{proof}
+
+\end{proof}
+\begin{exercise}
+Verify that the normalisation commutes with the localisation (i.e. if $A$ is an integral ring and $S\subset A$ a multiplicative subset, then $S^{-1}\tilde{A}=\widetilde{S^{-1}A}$) in $\Frac(A)$.) Also verify that integral $A$ is normal iff all its localizations in the maximal ideals are normal.
+\end{exercise}
+\begin{tcolorbox}
+\begin{proof}
+
+\end{proof}
+\end{tcolorbox}
+\begin{example}
+Consider the cubic curve $C\subset\mathbb{A}^{2}$ of the equation $Y^{2}-X^{2}(X+1)$. It passes through $O=(0,0))$ and the point is singular. In $\mathcal{M}(C)$, the rational function $t=\frac{y}{x}$ verify the equation $t^{2}=x+1$, therefore belongs to $\widetilde{\mathcal{O}(C)}$. In fact, the equality $x=t^{2}-1$ and $y=tx$ show that $\mathcal{M}(C)=k(t)$, so the normalisation of $\mathcal{O}(C)$ is $k[t]$. We deduce that $\widetilde{C}=\mathbb{A}^{1}$ and the morphism of normalisation(i.e. of desingularsastion) is given by $\phi(t)=(t^{2}-1,t^{3}-t)$. We observe that the preimage of $O$ is $\{1,-1\}$. Of course, apart from these two points, $\phi$ is an isomorphism $\mathbb{A}^{1}\backslash\{1,-1\}\rightarrow  C\backslash\{0\}$. 
+\end{example}
+\begin{exercise}
+In the case of cubic curve with cusp points defined by equation $Y^{2}-X^{3}$, calculalte the morphism of desingularsation and in particular verify that it's a homomorphism.
+\end{exercise}
+\begin{tcolorbox}
+\begin{proof}
+
+\end{proof}
+\end{tcolorbox}
+\begin{rem}
+In general, it is not always so easy to calculate a normalization. 
+\end{rem}
+\begin{rem}
+An irreducible variety $V$ is called normal if its local rings are normal at all points. In general, a such variety is not smooth, but we can show that its singular locus is of codimension $\geq
+2$.
+\end{rem}
+\subsection{Singular points and tangent cone}
+Let's take the example of two cubic planes singular at $O$ above. In each case, the tangent space $T_{O}C$ the locus of cancellation of the linear part of the equation $f=Y^{2}-X^{3}$ or $g=Y^{2}-X^{2}(X+1)$, which is not empty, so that $T_{O}C=T_{O}\mathbb{A}^{2}=k^{2}$ does not provide us with any information other than the non-regularity of the point. However, we can remark that the form of the singularity can be read on the quadratic part. In the case of $f$, the quadratic part is $Y^{2}$, which defines the line tangent to the cusp. In the case of case $g$, the quadratic part is $(X-Y)(X+Y)$ which defines the union of "tangents" to the two "branches" passing through the singular point $O$. 
+
+More generally, a polynomial $f\in k[X_{1},...,X_{n}]$ with null constant term is written as $\sum_{r>0}f^{(r)}$ with $f^{(r)}$ homogenus of degree $r$ in a unique way. We note that $f^{b}=f^{(r)}$ with $r$ the smallest integer such that $f^(r)\not=0$, and we call $f^{b}$ the principal part of $f$. Therefore we have that the hypersurface $V_{f}\subset \mathbb{A}^{n}$ is not singular in $O$ iff $f^{b}=f^{(1)}$, in which $T_{O}V_{f}=V_{f^{b}}$. If $\deg(f^{b})>1$, $V_{f^{b}}$ is not more a linear space, but remains a cone(stable by dilation)  with vertex  $O$. Intuitively, it is the cone which best approximates $V$ in a neighborhood of $O$. 
+
+\begin{defi}
+Suppose $V\subset \mathbb{A}^{n}$ passing through $O$. Denote $I^{b}_{V}$ as the ideal generated by $f^{b},\ f\in I_{V}$.  We call it tangent cone of $V$ in $O$ and we denote $C_{O}V$ the subvariety $V_{I^{b}_{V}}\subset \mathbb{A}^{n}$ defined by the ideal $I^{b}_{V}$.
+\end{defi}
+\begin{rem}
+the tangent cone is always included in the tangent space by construction. As our first definition of tangent space, this definition has the advantage of having a fairly clear geometric meaning.
+\end{rem}
+
+
+\begin{lem}
+Suppose $V\subset \mathbb{A}^{n}$ and $W\subset \mathbb{A}^{m}$ the varieties such that $\phi(V)\subset W$. Then $\phi^{b}(C_{0}V)\subset C_{0}W$. 
+\end{lem}
+\begin{proof}
+
+\end{proof}
+\begin{defi}
+The intrinsic tangent cone of $V$ at $O$ is the affine algebraic variety $\spm(gr \mathcal{O}_{V,O})$.
+\end{defi}
+The surjective morphism above makes    $\spm(gr \mathcal{O}_{V,O})$ a closed subvariety of affine space $\der_{k}(\mathcal{O}_{V,O},k)$. 
+\begin{lem}
+The $k$-linear of isomorphism $\alpha_{V,O}:\der_{k}(V,O)\rightarrow T_{O}V$ of lemme\ref{derisomorphism} induces an isomorphism of varieties $\spm(gr \mathcal{O}_{V,O})\rightarrow C_{O}V$. More precisely, we have an isomorphism 
+\begin{equation*}
+    k[X_{1},...,X_{n}]/I^{b}_{V}\rightarrow gr \mathcal{O}_{V,O}
+\end{equation*}
+which sends $X_{i}$ to its image in $\mathfrak{m}_{V,O}/\mathfrak{m}^{2}_{V,O}$.
+\end{lem}
+\begin{proof}
+
+\end{proof}
+\begin{example}
+In the case of curve $C=V_{Y^{2}-X^{3}}$, so we have $gr \mathcal{O}_{C,O}=k[X,Y]/(Y^{2})$ which is not reduced. In the study of singularity, the 2 has its importance and is interpreted as a multiplicity.
+\end{example}
+\begin{rem}
+A point $P$ is non-singular iff $C_{P}V=T_{P}V$, iff $gr \mathcal{O}_{V,P}$ is an algebra of polynomials. In general, we can show that $\dim gr \mathcal{O}_{V,P}=\dim \mathcal{O}_{V,P}=\dim V$(if $V$ irreducible). 
+\end{rem}
+\begin{defi}
+We call that a morphism $\phi: V\rightarrow W$ is etale at point if $gr \phi^{*}_{P}: gr \mathcal{O}_{W, \phi(P)}\rightarrow \mathcal{O}_{V,P}$ is an isomorphism, or in an equivalent way, if $\hat{\phi}^{*}_{P}:\hat{\mathcal{O}}_{W, \phi(P)}\rightarrow \hat{\mathcal{O}}_{V,P}$ is an isomorphism.
+\end{defi}
+The etale morphisms are very important in algebraic geometry. They play role as local isomorphim in topology. In particular, they are open and allow to define the theory of cohomology, which is very useful. And it replaces the singular cohomology of topological variety. Otherwise, the finite and etale morphism are analogous to topological coverings and allow to define a fundamental group.  
+\subsection{And tangent fiber}
+The tangent fiber play an important role in differential geometry. In algebraic geometry, we can put a family of (c0)tangent spaces of a variety. The key point from Kahler is the existence of universal derivation.
+\begin{lem}
+Suppose $A$ an algebra. The functor $M\rightarrow \der_{k}(A,M)$ of $A$-module in the $k$-vector space is representable by a pair $(\Omega, \partial_{univ})$.
+\end{lem}
+\begin{proof}
+
+\end{proof}
+\begin{example}
+Suppose $A=k[X_{1},...,X_{n}]$. Put $\dif f:=\partial_{univ}(f)$. We calculate that $\Omega_{A}$ is the free $A$-module of basis $\dif X_{1},...,\dif X_{n}$ and that $\dif f=\sum^{n}_{i=1}\frac{\partial f}{\partial X_{i}}\dif X_{i}$.
+\end{example}
+\begin{exercise}
+Verify that $\Omega_{S^{-1}A/k}\cong S^{-1}\Omega_{A/k}(:=S^{-1}A\otimes_{A}\Omega_{A/k})$ if $S\subset A$ is a multiplicative subset. 
+\end{exercise}
+\begin{tcolorbox}
+\begin{proof}
+
+\end{proof}
+\end{tcolorbox}
+\begin{defi}
+Suppose $A$ a $k$-alegbra and $\mathfrak{m}$ maximal ideal with residue field $A/\mathfrak{m}=k$. So we have that 
+\begin{equation*}
+    \der_{k}(A,A/\mathfrak{m})=\homo_{A}(\Omega_{A},k)=\homo_{A/\mathfrak{m}}(\Omega_{A}\otimes_{A}A/\mathfrak{m},k)
+\end{equation*}
+comparing to  \ref{derisomorphism}, we can deduce an isomorphism 
+\begin{equation*}
+    \Omega_{A}\otimes_{A}A/\mathfrak{m}=\mathfrak{m}/\mathfrak{m}^{2}.
+\end{equation*}
+So $\Omega_{A}$ is an $A-$module whose reduction modulo each maximal gives the cotangent in $\mathfrak{m}$. For this reason, we call this tangent module.
+\end{defi}
+\begin{defi}
+Now consider the symmetric $A$-algebra $\sym_{A}\Omega_{A}$. Previously, it's equipped with an $A$-module morphism $\Omega_{A}\rightarrow \sym_{A}(\Omega_{A})$ which is universal for the morphism of $A$-modules of $\Omega_{A}$ in a commutative $A$-algebra. we deduce (we can also deduce it from the construction via tensor algebra) an isomorphism 
+\begin{equation*}
+    \sym_{A}(\Omega_{A})\otimes_{A}A/\mathfrak{m} =\sym_{A/\mathfrak{m}}(\Omega_{A}\otimes_{A}A/\mathfrak{m})\cong \sym_{k}(\mathfrak{m}/\mathfrak{m}^{2})
+\end{equation*}
+for every maximal ideal $\mathfrak{m}\subset A$ of residue field $k$.
+
+Now suppose that $A=\mathcal{O}(V)$ for an affine variety $V$. And note that 
+\begin{equation*}
+    \mathcal{T}V:=\spm(\sym_{A}\Omega_{A})
+\end{equation*}
+It's an affine variety above of $V$. More precisely, it is equipped with the morphism $\tau:\mathcal{T}V\rightarrow V$ such that $\tau^{*}$ is the structural morphism $A\rightarrow \sym_{A}(\Omega_{A})$. If $P\in V$ corresponds to a maximal ideal $\mathfrak{m}$ of $A$, then the fibre $\tau^{-1}(P)$ is given by 
+\begin{align*}
+    \tau^{-1}(P)&=\{\mathfrak{n}\in\spm(\sym_{A}(\Omega_{A})), \tau^{*}(\mathfrak{m})\subset\mathfrak{n}\}\\
+    &=\spm(\sym_{A}(\Omega_{A})\otimes_{A}A/\mathfrak{m})\\
+    &=\spm(\sym_{k}(\mathfrak{m}/\mathfrak{m}^{2}))\\
+    &\cong T_{P}V
+\end{align*}
+Thus $\mathcal{T}V$ is a variety that put together all the tangent space of $V$.   
+\end{defi}
+\begin{example}
+If $V=\mathbb{A}^{n}$, we saw that $\Omega_{A}$ is free of rank $n$ over $A$, it follows that $\sym_{A}(\Omega_{A})$ is a polynomial algebra over $A$. In the case of $\mathcal{T}V$ which is trivial fibration in the sense where there exists an isomorhpism $\mathcal{T}V\rightarrow V\times\mathbb{A}^{n}$ with $\tau $ given by the first projection.
+
+\end{example}
+
+The following lemma shows that for a smooth variety, the fibration $\mathcal{T}V\rightarrow V$ is locally trivial.
+
+\begin{lem}
+Suppose a regular point $P$ of algebraic variety $V$. There exists a open affine smooth neighborhood $U\subset V$ of $P$ and the functions $f_{1},...,f_{d}\in\mathcal{O}(U)$ such that the $\partial_{univ}f_{i}$ form a basis of $\mathcal{O}(U)-$module $\Omega_{\mathcal{O}(U)}$. 
+\end{lem}
+\begin{proof}
+
+\end{proof}
+\begin{lem}
+If $M$ is a module of finite type over Noetherian $A$, and $\mathfrak{p}$ is prime ideal such that $M_{\mathfrak{p}}=M\otimes_{A}A_{\mathfrak{p}}=0$, then there exists $h\in A\backslash\mathfrak{p}$ such that $M[h^{-1}]:=M\otimes_{A} A[h^{-1}]=0$.
+\end{lem}
+\begin{proof}
+
+
+\end{proof}
+\subsubsection{functoriality}
+Let us also give ourselves a morphism $\psi:W\rightarrow V$ between affine varieties and denote $\psi^{*}:A\rightarrow B$ the morphism of $k$-algebra of functions. For a $B-$module $M$, we have an application of restriction $\partial\rightarrow \psi^{*}\partial, \der_{k}(B,M)\rightarrow \der_{k}(A,M)$, from where a functorial map in $M$:
+\begin{equation*}
+    \psi^{*}:\homo_{B}(\Omega_{B}, M)\rightarrow \homo_{A}(\Omega_{A}, M)=\homo_{B}(\Omega_{A}\otimes_{A}B, M)
+\end{equation*}
+By Yoneda lemma, we deduce a morphism of $B$-module:
+\begin{equation*}
+    \Omega_{\psi}:\Omega_{A}\otimes_{A}B\rightarrow \Omega_{B},
+\end{equation*}
+which in turn induces a morphism of $B$-algebra $\sym_{A}(\Omega_{A})\otimes_{A}B\rightarrow \sym_{B}(\Omega_{B})$, from where a morphism $\mathcal{T}\psi:\mathcal{T}W\rightarrow \mathcal{T}V$ of $\psi:W\rightarrow V$ above.
+\begin{lem}
+If $V, W$ are smooth and $\phi$ is etale, then $\Omega_{\phi}$ is an isomorphism and $\mathcal{T}\phi$ identify $\mathcal{T}W$ to the fiber product $\mathcal{T}W\times_{V}W$.
+\end{lem}
+\begin{proof}
+
+\end{proof}
+\begin{example}
+If $V\subset\mathbb{A}^{n}$, so we have an embedding $\mathcal{T}V\subset \mathbb{A}^{n}\times\mathbb{A}^{n}$. By unrolling the definitions, we notice that $\mathcal{T}V$ is a closed subvariety of $\mathbb{A}^{n}\times\mathbb{A}^{n}$ defined by the polynomial $f(X_{1},...,X_{n})$ and $\sum^{n}_{i=1}\frac{\partial f}{\partial X_{i}}(X_{1},...,X_{n})Y_{i} $ where $f\in I_{V}$ and where the $X_{i}$ are coordinates for the first factor and $Y_{i}$ for the second factor.
+\end{example}
+\begin{defi}
+Global tangent cone:
+
+Suppose $V$ affine variety of ring of funcctions $A$. With the notation of first lemma of this section $I=\ker(A\otimes_{k}A\rightarrow A) $, consider the $A$-algebra:
+\begin{equation*}
+    gr_{I}(A\otimes_{k}A):=A\otimes\Omega_{A/k}\otimes I^{2}/I^{3}\otimes... 
+\end{equation*}
+The maximal spectrum $\mathcal{C}V$ (rather that of its reduced algebra) is called global tangent cone of $V$. As in the specific case, the surjective morphism
+\begin{equation*}
+    \sym_{A}(\Omega_{A})\twoheadrightarrow gr_{I}(A\otimes_{k}A)
+\end{equation*}
+shows that $\mathcal{C}V$ is a closed subvariety of $\mathcal{T}V$.
+
+\end{defi}
+\section{Projective Variety}
+$k$ is an algebraically closed field.
+\subsection{Projective Space}
+We denote $\mathbb{P}^{n}(k)$ the quotient by the set $k^{n+1}\backslash\{0\}$ by the action of $k^{\times}$ 
+
+
+
+
+
+
+
+
+
+
+
+
+\newpage
+\bibliographystyle{plain}
+\bibliography{bib.bib}
+
+
+\end{document}
